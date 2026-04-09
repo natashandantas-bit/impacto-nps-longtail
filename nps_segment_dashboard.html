@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NPS — Longtail vs Mature vs Meli Pro</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f0f2f5; color: #333; }
+  .header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: white; padding: 18px 28px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+  .header h1 { font-size: 1.3rem; font-weight: 600; }
+  .header .meta { font-size: 0.78rem; opacity: 0.7; text-align: right; }
+  .seg-badge { padding: 3px 10px; border-radius: 10px; font-size: 0.72rem; margin-top: 5px; display: inline-block; margin-right: 5px; font-weight: 600; }
+  .container { max-width: 1440px; margin: 0 auto; padding: 18px; }
+  .section-label { font-size: 0.67rem; text-transform: uppercase; letter-spacing: 1px; color: #aaa; margin: 18px 0 8px; font-weight: 700; }
+
+  /* KPI — linha única compacta */
+  .kpi-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-bottom: 18px; }
+  .kpi-card { background: white; border-radius: 10px; padding: 13px 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); border-left: 3px solid #ddd; }
+  .kpi-card.lt  { border-left-color: #e74c3c; }
+  .kpi-card.mt  { border-left-color: #3498db; }
+  .kpi-card.mp  { border-left-color: #9b59b6; }
+  .kpi-card.gap { border-left-color: #f39c12; }
+  .kpi-label { font-size: 0.67rem; text-transform: uppercase; color: #aaa; letter-spacing: 0.4px; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .kpi-value { font-size: 1.55rem; font-weight: 700; line-height: 1.1; }
+  .kpi-sub { font-size: 0.72rem; margin-top: 4px; color: #888; line-height: 1.4; }
+  .up { color: #27ae60; } .down { color: #e74c3c; } .neutral { color: #888; } .muted { color: #ccc; }
+
+  .card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); margin-bottom: 16px; }
+  .card h2 { font-size: 0.87rem; font-weight: 700; color: #555; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; border-bottom: 2px solid #f0f2f5; padding-bottom: 8px; }
+  .chart-wrap { position: relative; height: 230px; }
+  .legend-row { display: flex; gap: 18px; font-size: 0.78rem; margin-bottom: 10px; flex-wrap: wrap; color: #555; }
+  .legend-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 5px; vertical-align: middle; }
+
+  /* Filtros da tabela */
+  .table-controls { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+  .filter-group { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .filter-group span { font-size: 0.75rem; color: #999; white-space: nowrap; }
+  .filt-btn { padding: 5px 13px; border: 1.5px solid #ccc; border-radius: 14px; background: white; color: #666; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+  .filt-btn.active { background: #2c3e50; color: white; border-color: #2c3e50; }
+  .filt-btn.q1-btn.active { background: #8e44ad; border-color: #8e44ad; }
+  .filt-btn:hover:not(.active) { background: #f0f2f5; }
+  .sort-btn { padding: 5px 12px; border: 1.5px solid #ccc; border-radius: 14px; background: white; color: #666; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+  .sort-btn.active { border-color: #3498db; color: #3498db; background: #eaf4fd; }
+  .sort-btn:hover:not(.active) { background: #f0f2f5; }
+  .sep { color: #ddd; font-size: 1.2rem; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+  th { background: #f8f9fa; color: #888; text-transform: uppercase; font-size: 0.67rem; letter-spacing: 0.5px; padding: 9px 10px; text-align: left; border-bottom: 2px solid #eee; white-space: nowrap; }
+  td { padding: 8px 10px; border-bottom: 1px solid #f5f5f5; vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #fafbff; }
+  .nps-cell { font-weight: 700; font-size: 0.9rem; }
+  .th-lt { color: #e74c3c !important; font-weight: 700; }
+  .th-mt { color: #3498db !important; font-weight: 700; }
+  .th-mp { color: #9b59b6 !important; font-weight: 700; }
+
+  .challenge-card { border: 1px solid #eee; border-radius: 10px; padding: 13px 15px; margin-bottom: 9px; background: white; transition: box-shadow 0.15s; }
+  .challenge-card:hover { box-shadow: 0 4px 14px rgba(0,0,0,0.08); }
+  .challenge-header { display: flex; align-items: center; gap: 10px; margin-bottom: 7px; flex-wrap: wrap; }
+  .challenge-badge { padding: 2px 10px; border-radius: 10px; font-size: 0.67rem; font-weight: 700; color: white; white-space: nowrap; }
+  .challenge-process { font-weight: 700; font-size: 0.9rem; color: #222; }
+  .challenge-metrics { display: flex; gap: 20px; font-size: 0.8rem; margin-bottom: 5px; flex-wrap: wrap; color: #444; }
+  .challenge-cdus { font-size: 0.76rem; color: #777; margin-top: 5px; padding-top: 5px; border-top: 1px solid #f0f2f5; }
+
+  @media (max-width: 1100px) { .kpi-grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 700px)  { .kpi-grid { grid-template-columns: repeat(2, 1fr); } .challenge-metrics { flex-direction: column; gap: 3px; } }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <h1>NPS Sellers BR · Comparativo por Segmento</h1>
+    <div>
+      <span class="seg-badge" style="background:#e74c3c">Longtail</span>
+      <span class="seg-badge" style="background:#3498db">Mature</span>
+      <span class="seg-badge" style="background:#9b59b6">Meli Pro</span>
+    </div>
+  </div>
+  <div class="meta">
+    Atualizado: <strong>09/04/2026 09:50</strong><br>
+    Referência: <strong>April/2026</strong>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- KPI Cards -->
+  <div class="section-label">NPS atual por segmento</div>
+  <div class="kpi-grid">
+    <div class="kpi-card lt">
+      <div class="kpi-label">NPS Longtail</div>
+      <div class="kpi-value" style="color:#f39c12">61.8%</div>
+      <div class="kpi-sub"><span class="up">▲ +0.15 pp</span> MoM · target 63.7%</div>
+    </div>
+    <div class="kpi-card mt">
+      <div class="kpi-label">NPS Mature</div>
+      <div class="kpi-value" style="color:#f39c12">62.6%</div>
+      <div class="kpi-sub"><span class="up">▲ +1.63 pp</span> MoM · 388 pesq</div>
+    </div>
+    <div class="kpi-card mp">
+      <div class="kpi-label">NPS Meli Pro</div>
+      <div class="kpi-value" style="color:#f39c12">63.2%</div>
+      <div class="kpi-sub"><span class="down">▼ -2.18 pp</span> MoM · 38 pesq</div>
+    </div>
+    <div class="kpi-card gap">
+      <div class="kpi-label">Gap LT vs Benchmark</div>
+      <div class="kpi-value" style="color:#e74c3c">▼ -1.4 pp</div>
+      <div class="kpi-sub">vs Meli Pro (63.2%)</div>
+    </div>
+    <div class="kpi-card lt">
+      <div class="kpi-label">Pesquisas Longtail</div>
+      <div class="kpi-value">3,734</div>
+      <div class="kpi-sub"><span class="down">▼ -10847 pp</span> MoM</div>
+    </div>
+    <div class="kpi-card lt" style="border-left-color:#c0392b">
+      <div class="kpi-label">Detratores Longtail</div>
+      <div class="kpi-value" style="color:#c0392b">535</div>
+      <div class="kpi-sub">mês atual</div>
+    </div>
+  </div>
+
+  <!-- Tendência -->
+  <div class="card">
+    <h2>Tendência NPS — Últimos 6 meses</h2>
+    <div class="legend-row">
+      <span><span class="legend-dot" style="background:#e74c3c"></span>Longtail</span>
+      <span><span class="legend-dot" style="background:#3498db"></span>Mature</span>
+      <span><span class="legend-dot" style="background:#9b59b6"></span>Meli Pro</span>
+      <span><span class="legend-dot" style="background:#f39c12;border-radius:2px"></span>Target (LT)</span>
+    </div>
+    <div class="chart-wrap">
+      <canvas id="chartTrend"></canvas>
+    </div>
+  </div>
+
+  <!-- Tabela Processos -->
+  <div class="card">
+    <h2>⚠️ Comparativo por Processo — Longtail · Mature · Meli Pro</h2>
+    <div class="table-controls">
+      <div class="filter-group">
+        <span>Período:</span>
+        <button class="filt-btn" onclick="filterPeriod('Q1')" id="filt-Q1">Q1 2026</button>
+        <button class="filt-btn" onclick="filterPeriod('2026-01')" id="filt-2026-01">Jan/2026</button>
+        <button class="filt-btn" onclick="filterPeriod('2026-02')" id="filt-2026-02">Feb/2026</button>
+        <button class="filt-btn" onclick="filterPeriod('2026-03')" id="filt-2026-03">Mar/2026</button>
+        <button class="filt-btn active" onclick="filterPeriod('2026-04')" id="filt-2026-04">Apr/2026</button>
+      </div>
+      <span class="sep">|</span>
+      <div class="filter-group">
+        <span>Ordenar:</span>
+        <button class="sort-btn active" id="sort-vol"      onclick="setSort('vol')">Volume LT ↕</button>
+        <button class="sort-btn"        id="sort-lt-asc"   onclick="setSort('lt-asc')">LT NPS ↑</button>
+        <button class="sort-btn"        id="sort-lt-desc"  onclick="setSort('lt-desc')">LT NPS ↓</button>
+        <button class="sort-btn"        id="sort-gap-asc"  onclick="setSort('gap-asc')">Gap ↑ (pior)</button>
+        <button class="sort-btn"        id="sort-gap-desc" onclick="setSort('gap-desc')">Gap ↓ (melhor)</button>
+      </div>
+    </div>
+    <p style="font-size:0.75rem;color:#bbb;margin-bottom:10px">
+      Gap = NPS Longtail − melhor benchmark disponível (mín. 3 pesquisas) ·
+      <span style="color:#8e44ad;font-weight:600">Q1</span> = Jan+Fev+Mar agregados
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th style="width:28%">Processo</th>
+          <th class="th-lt">Longtail</th>
+          <th class="th-mt">Mature</th>
+          <th class="th-mp">Meli Pro</th>
+          <th>Gap (LT vs benchmark)</th>
+        </tr>
+      </thead>
+      <tbody id="proc-tbody"></tbody>
+    </table>
+  </div>
+
+  <!-- Tabela CDU -->
+  <div class="card">
+    <h2>Top CDUs de Detração — Comparativo por Segmento</h2>
+    <p style="font-size:0.75rem;color:#bbb;margin-bottom:10px">
+      Q1 2026 · ordenado por detratores Longtail · formato: qtde (% det/total)
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th style="width:35%">CDU</th>
+          <th class="th-lt">Longtail</th>
+          <th class="th-mt">Mature</th>
+          <th class="th-mp">Meli Pro</th>
+        </tr>
+      </thead>
+      <tbody><tr><td>Tiene dudas sobre el estado del envio</td><td><strong>1,386</strong> <span style="color:#f39c12;font-size:0.78rem">(18.8%)</span></td><td><strong>11</strong> <span style="color:#888;font-size:0.78rem">(14.3%)</span></td><td><strong>1</strong> <span style="color:#888;font-size:0.78rem">(4.8%)</span></td></tr>
+<tr><td>Reclamos</td><td><strong>478</strong> <span style="color:#f39c12;font-size:0.78rem">(17.2%)</span></td><td><strong>142</strong> <span style="color:#f39c12;font-size:0.78rem">(16.7%)</span></td><td><strong>19</strong> <span style="color:#888;font-size:0.78rem">(11.1%)</span></td></tr>
+<tr><td>M�tricas y comisiones</td><td><strong>437</strong> <span style="color:#888;font-size:0.78rem">(11.4%)</span></td><td class="muted">—</td><td class="muted">—</td></tr>
+<tr><td>Quiere cancelar o reprogramar el env�o</td><td><strong>289</strong> <span style="color:#888;font-size:0.78rem">(13.4%)</span></td><td><strong>2</strong> <span style="color:#e74c3c;font-size:0.78rem">(33.3%)</span></td><td class="muted">—</td></tr>
+<tr><td>Reclama por el costo de env�o</td><td><strong>257</strong> <span style="color:#f39c12;font-size:0.78rem">(20.0%)</span></td><td><strong>80</strong> <span style="color:#f39c12;font-size:0.78rem">(22.3%)</span></td><td><strong>3</strong> <span style="color:#888;font-size:0.78rem">(11.1%)</span></td></tr>
+<tr><td>Cancelaciones</td><td><strong>199</strong> <span style="color:#888;font-size:0.78rem">(13.9%)</span></td><td><strong>33</strong> <span style="color:#888;font-size:0.78rem">(10.3%)</span></td><td><strong>3</strong> <span style="color:#888;font-size:0.78rem">(4.7%)</span></td></tr>
+<tr><td>HT - Ventas</td><td><strong>198</strong> <span style="color:#888;font-size:0.78rem">(5.0%)</span></td><td><strong>102</strong> <span style="color:#888;font-size:0.78rem">(12.8%)</span></td><td><strong>8</strong> <span style="color:#888;font-size:0.78rem">(10.7%)</span></td></tr>
+<tr><td>Tiene problemas con la etiqueta de su env�o</td><td><strong>183</strong> <span style="color:#888;font-size:0.78rem">(14.7%)</span></td><td><strong>15</strong> <span style="color:#888;font-size:0.78rem">(9.7%)</span></td><td><strong>2</strong> <span style="color:#888;font-size:0.78rem">(12.5%)</span></td></tr>
+<tr><td>Quiere saber porqu� se inactiv� su cuenta</td><td><strong>164</strong> <span style="color:#888;font-size:0.78rem">(7.7%)</span></td><td class="muted">—</td><td class="muted">—</td></tr>
+<tr><td>Bugs</td><td><strong>155</strong> <span style="color:#f39c12;font-size:0.78rem">(29.0%)</span></td><td><strong>3</strong> <span style="color:#f39c12;font-size:0.78rem">(18.8%)</span></td><td><strong>6</strong> <span style="color:#e74c3c;font-size:0.78rem">(66.7%)</span></td></tr>
+<tr><td>Problemas para despachar un paquete/producto</td><td><strong>152</strong> <span style="color:#f39c12;font-size:0.78rem">(18.2%)</span></td><td><strong>13</strong> <span style="color:#888;font-size:0.78rem">(11.3%)</span></td><td><strong>1</strong> <span style="color:#888;font-size:0.78rem">(11.1%)</span></td></tr>
+<tr><td>Devoluciones</td><td><strong>139</strong> <span style="color:#f39c12;font-size:0.78rem">(29.3%)</span></td><td><strong>40</strong> <span style="color:#f39c12;font-size:0.78rem">(19.7%)</span></td><td><strong>2</strong> <span style="color:#888;font-size:0.78rem">(12.5%)</span></td></tr>
+<tr><td>Dudas sobre cargos facturados</td><td><strong>134</strong> <span style="color:#f39c12;font-size:0.78rem">(25.3%)</span></td><td class="muted">—</td><td class="muted">—</td></tr>
+<tr><td>Tiene dudas generales sobre el despacho</td><td><strong>127</strong> <span style="color:#f39c12;font-size:0.78rem">(15.5%)</span></td><td><strong>13</strong> <span style="color:#f39c12;font-size:0.78rem">(20.3%)</span></td><td class="muted">—</td></tr>
+<tr><td>Quiere saber como funciona Env�os Extra</td><td><strong>109</strong> <span style="color:#888;font-size:0.78rem">(8.8%)</span></td><td class="muted">—</td><td class="muted">—</td></tr>
+</tbody>
+    </table>
+  </div>
+
+  <!-- Desafios -->
+  <div class="card">
+    <h2>🎯 Desafios Longtail — Oportunidades para o Próximo Trimestre</h2>
+    <p style="font-size:0.78rem;color:#bbb;margin-bottom:12px">
+      Processos com NPS Longtail <strong style="color:#555">≥ 5 pp abaixo</strong> do melhor benchmark
+      · análise baseada em <strong style="color:#8e44ad">Q1 2026</strong> (Jan+Fev+Mar)
+      · mín. 10 pesquisas Longtail e 5 benchmark · ordenados por maior gap
+    </p>
+    
+        <div class="challenge-card">
+          <div class="challenge-header">
+            <span class="challenge-badge" style="background:#c0392b">CRITICO</span>
+            <span class="challenge-process">PR - Art�culos prohibidos</span>
+            <span style="font-size:0.72rem;color:#bbb">baseado em Q1 2026</span>
+          </div>
+          <div class="challenge-metrics">
+            <span>🔴 Longtail: <strong style="color:#e74c3c">38.9%</strong> (522 pesq)</span>
+            <span>✅ Meli Pro: <strong style="color:#27ae60">100.0%</strong></span>
+            <span>📉 Gap: <strong style="color:#e74c3c">▼ 61.1 pp</strong></span>
+            <span>📈 Potencial: <strong>+7.8 pp</strong></span>
+          </div>
+          <div class="challenge-cdus">
+            <span style="color:#bbb">Top CDUs Longtail (Q1) →</span>&nbsp;<em>Usuario Restringido</em> (69 det) · <em>Medicamentos</em> (14 det) · <em>Armas</em> (14 det) · <em>Decodificadores</em> (8 det)
+          </div>
+        </div>
+        <div class="challenge-card">
+          <div class="challenge-header">
+            <span class="challenge-badge" style="background:#c0392b">CRITICO</span>
+            <span class="challenge-process">Reversa</span>
+            <span style="font-size:0.72rem;color:#bbb">baseado em Q1 2026</span>
+          </div>
+          <div class="challenge-metrics">
+            <span>🔴 Longtail: <strong style="color:#e74c3c">51.1%</strong> (434 pesq)</span>
+            <span>✅ Meli Pro: <strong style="color:#27ae60">80.0%</strong></span>
+            <span>📉 Gap: <strong style="color:#e74c3c">▼ 28.9 pp</strong></span>
+            <span>📈 Potencial: <strong>+6.0 pp</strong></span>
+          </div>
+          <div class="challenge-cdus">
+            <span style="color:#bbb">Top CDUs Longtail (Q1) →</span>&nbsp;<em>Quiere consultar por una devoluci�n en camino</em> (51 det) · <em>Quiere reclamar por un producto ya devuelto</em> (16 det) · <em>Quiere saber el motivo de inicio de la devoluci�n</em> (15 det) · <em>Tiene dudas sobre el funcionamiento de las devoluciones</em> (8 det)
+          </div>
+        </div>
+        <div class="challenge-card">
+          <div class="challenge-header">
+            <span class="challenge-badge" style="background:#c0392b">CRITICO</span>
+            <span class="challenge-process">PR - T�cnica prohibida</span>
+            <span style="font-size:0.72rem;color:#bbb">baseado em Q1 2026</span>
+          </div>
+          <div class="challenge-metrics">
+            <span>🔴 Longtail: <strong style="color:#e74c3c">75.8%</strong> (1,113 pesq)</span>
+            <span>✅ Meli Pro: <strong style="color:#27ae60">100.0%</strong></span>
+            <span>📉 Gap: <strong style="color:#e74c3c">▼ 24.2 pp</strong></span>
+            <span>📈 Potencial: <strong>+2.5 pp</strong></span>
+          </div>
+          <div class="challenge-cdus">
+            <span style="color:#bbb">Top CDUs Longtail (Q1) →</span>&nbsp;<em>Rollback</em> (21 det) · <em>Mal categorizado</em> (20 det) · <em>Usuario Restringido</em> (11 det) · <em>Publicaci�n activa</em> (10 det)
+          </div>
+        </div>
+        <div class="challenge-card">
+          <div class="challenge-header">
+            <span class="challenge-badge" style="background:#c0392b">CRITICO</span>
+            <span class="challenge-process">Gestiones Operativas</span>
+            <span style="font-size:0.72rem;color:#bbb">baseado em Q1 2026</span>
+          </div>
+          <div class="challenge-metrics">
+            <span>🔴 Longtail: <strong style="color:#e74c3c">67.6%</strong> (1,534 pesq)</span>
+            <span>✅ Meli Pro: <strong style="color:#27ae60">87.5%</strong></span>
+            <span>📉 Gap: <strong style="color:#e74c3c">▼ 19.9 pp</strong></span>
+            <span>📈 Potencial: <strong>+3.6 pp</strong></span>
+          </div>
+          <div class="challenge-cdus">
+            <span style="color:#bbb">Top CDUs Longtail (Q1) →</span>&nbsp;<em>Colecta</em> (51 det) · <em>Gesti�n Log�stica</em> (39 det) · <em>Places</em> (33 det) · <em>Tiene dudas generales sobre el despacho</em> (28 det)
+          </div>
+        </div>
+        <div class="challenge-card">
+          <div class="challenge-header">
+            <span class="challenge-badge" style="background:#c0392b">CRITICO</span>
+            <span class="challenge-process">Reputaci�n</span>
+            <span style="font-size:0.72rem;color:#bbb">baseado em Q1 2026</span>
+          </div>
+          <div class="challenge-metrics">
+            <span>🔴 Longtail: <strong style="color:#e74c3c">59.9%</strong> (4,284 pesq)</span>
+            <span>✅ Meli Pro: <strong style="color:#27ae60">78.6%</strong></span>
+            <span>📉 Gap: <strong style="color:#e74c3c">▼ 18.7 pp</strong></span>
+            <span>📈 Potencial: <strong>+4.9 pp</strong></span>
+          </div>
+          <div class="challenge-cdus">
+            <span style="color:#bbb">Top CDUs Longtail (Q1) →</span>&nbsp;<em>Reclamos</em> (471 det) · <em>Cancelaciones</em> (167 det) · <em>Consultas informativas de Reputaci�n</em> (95 det) · <em>Bugs</em> (3 det)
+          </div>
+        </div>
+        <div class="challenge-card">
+          <div class="challenge-header">
+            <span class="challenge-badge" style="background:#c0392b">CRITICO</span>
+            <span class="challenge-process">Post Compra Funcionalidades Vendedor</span>
+            <span style="font-size:0.72rem;color:#bbb">baseado em Q1 2026</span>
+          </div>
+          <div class="challenge-metrics">
+            <span>🔴 Longtail: <strong style="color:#e74c3c">40.4%</strong> (1,804 pesq)</span>
+            <span>✅ Meli Pro: <strong style="color:#27ae60">58.6%</strong></span>
+            <span>📉 Gap: <strong style="color:#e74c3c">▼ 18.2 pp</strong></span>
+            <span>📈 Potencial: <strong>+7.5 pp</strong></span>
+          </div>
+          <div class="challenge-cdus">
+            <span style="color:#bbb">Top CDUs Longtail (Q1) →</span>&nbsp;<em>Devoluciones</em> (137 det) · <em>Verdi MED</em> (93 det) · <em>Mediaci�n abierta</em> (83 det) · <em>Mediaci�n cerrada</em> (58 det)
+          </div>
+        </div>
+        <div class="challenge-card">
+          <div class="challenge-header">
+            <span class="challenge-badge" style="background:#c0392b">CRITICO</span>
+            <span class="challenge-process">PR - Propiedad intelectual</span>
+            <span style="font-size:0.72rem;color:#bbb">baseado em Q1 2026</span>
+          </div>
+          <div class="challenge-metrics">
+            <span>🔴 Longtail: <strong style="color:#e74c3c">68.2%</strong> (873 pesq)</span>
+            <span>✅ Meli Pro: <strong style="color:#27ae60">83.3%</strong></span>
+            <span>📉 Gap: <strong style="color:#e74c3c">▼ 15.2 pp</strong></span>
+            <span>📈 Potencial: <strong>+3.6 pp</strong></span>
+          </div>
+          <div class="challenge-cdus">
+            <span style="color:#bbb">Top CDUs Longtail (Q1) →</span>&nbsp;<em>Fakes</em> (61 det) · <em>Usuario Restringido</em> (24 det) · <em>Rollback</em> (13 det) · <em>Acuerdos Comerciales</em> (4 det)
+          </div>
+        </div>
+        <div class="challenge-card">
+          <div class="challenge-header">
+            <span class="challenge-badge" style="background:#e74c3c">ALTA</span>
+            <span class="challenge-process">Despacho Ventas y Publicaciones</span>
+            <span style="font-size:0.72rem;color:#bbb">baseado em Q1 2026</span>
+          </div>
+          <div class="challenge-metrics">
+            <span>🔴 Longtail: <strong style="color:#e74c3c">54.8%</strong> (3,658 pesq)</span>
+            <span>✅ Meli Pro: <strong style="color:#27ae60">66.7%</strong></span>
+            <span>📉 Gap: <strong style="color:#e74c3c">▼ 11.9 pp</strong></span>
+            <span>📈 Potencial: <strong>+5.3 pp</strong></span>
+          </div>
+          <div class="challenge-cdus">
+            <span style="color:#bbb">Top CDUs Longtail (Q1) →</span>&nbsp;<em>Reclama por el costo de env�o</em> (254 det) · <em>Tiene problemas con la etiqueta de su env�o</em> (182 det) · <em>Problemas para despachar un paquete/producto</em> (151 det) · <em>Tiene dudas generales sobre el despacho</em> (99 det)
+          </div>
+        </div>
+        <div class="challenge-card">
+          <div class="challenge-header">
+            <span class="challenge-badge" style="background:#e74c3c">ALTA</span>
+            <span class="challenge-process">Viaje del paquete - Vendedor</span>
+            <span style="font-size:0.72rem;color:#bbb">baseado em Q1 2026</span>
+          </div>
+          <div class="challenge-metrics">
+            <span>🔴 Longtail: <strong style="color:#e74c3c">65.8%</strong> (565 pesq)</span>
+            <span>✅ Meli Pro: <strong style="color:#27ae60">76.0%</strong></span>
+            <span>📉 Gap: <strong style="color:#e74c3c">▼ 10.2 pp</strong></span>
+            <span>📈 Potencial: <strong>+3.7 pp</strong></span>
+          </div>
+          <div class="challenge-cdus">
+            <span style="color:#bbb">Top CDUs Longtail (Q1) →</span>&nbsp;<em>Tiene dudas sobre el estado del envio</em> (47 det) · <em>Quiere actualizar el estado de su env�o</em> (15 det) · <em>Quiere cancelar o reprogramar el env�o</em> (5 det) · <em>Generales</em> (3 det)
+          </div>
+        </div>
+  </div>
+
+</div>
+
+<script>
+const CHART_DATA = {"labels": ["2025-10", "2025-11", "2025-12", "2026-01", "2026-02", "2026-03", "2026-04"], "longtail": [56.87, 57.41, 57.26, 62.94, 62.21, 61.61, 61.76], "mature": [48.22, 45.09, 46.96, 55.99, 59.47, 61.0, 62.63], "melipro": [null, 72.19, 75.11, 77.3, 74.69, 65.34, 63.16], "targets": [63.06, 61.83, 60.79, 60.36, 60.16, 61.9, 65.53]};
+const PROC_DATA  = {"2026-01": {"Longtail": {"Viaje del paquete - Comprador": {"nps": 54.42, "surveys": 4026, "detractors": 694}, "Afiliados ML": {"nps": 70.93, "surveys": 2119, "detractors": 221}, "Reputaci�n ME": {"nps": 83.87, "surveys": 1736, "detractors": 86}, "Drivers": {"nps": 68.69, "surveys": 1712, "detractors": 191}, "Reputaci�n": {"nps": 58.03, "surveys": 1682, "detractors": 297}, "Despacho Ventas y Publicaciones": {"nps": 53.77, "surveys": 1473, "detractors": 274}, "Gestiones Operativas": {"nps": 68.42, "surveys": 684, "detractors": 79}, "Post Compra Funcionalidades Vendedor": {"nps": 34.62, "surveys": 595, "detractors": 167}, "Places Kangu": {"nps": 69.1, "surveys": 534, "detractors": 57}, "Antes de publicar": {"nps": 86.24, "surveys": 436, "detractors": 17}, "Emision de Nota Fiscal": {"nps": 65.97, "surveys": 429, "detractors": 56}, "Potenciar Ventas": {"nps": 59.84, "surveys": 371, "detractors": 54}, "PR - T�cnica prohibida": {"nps": 76.06, "surveys": 355, "detractors": 31}, "Facturaci�n": {"nps": 47.86, "surveys": 351, "detractors": 76}, "Gesti�n de Publicaci�n": {"nps": 51.62, "surveys": 339, "detractors": 67}, "PR - Propiedad intelectual": {"nps": 63.69, "surveys": 325, "detractors": 44}, "Durante la Entrega": {"nps": 55.31, "surveys": 273, "detractors": 48}, "Viaje del paquete - Vendedor": {"nps": 67.49, "surveys": 203, "detractors": 26}, "Denuncia de usuario": {"nps": 72.28, "surveys": 184, "detractors": 20}, "PR - Art�culos prohibidos": {"nps": 52.33, "surveys": 172, "detractors": 35}, "Datos fiscales": {"nps": 64.89, "surveys": 131, "detractors": 17}, "Calidad de foto": {"nps": 71.95, "surveys": 82, "detractors": 9}, "Anulaci�n de Venta": {"nps": 55.13, "surveys": 78, "detractors": 12}, "PR - Datos Personales": {"nps": 83.61, "surveys": 61, "detractors": 3}, "Costos de env�o - Comprador": {"nps": 8.7, "surveys": 46, "detractors": 19}, "MercadoShops": {"nps": 35.71, "surveys": 14, "detractors": 4}, "Guardia Urbana": {"nps": 66.67, "surveys": 6, "detractors": 1}, "Posterior a la Entrega": {"nps": 40.0, "surveys": 5, "detractors": 1}, "Asignaci�n del Contactanos Post Venta": {"nps": 0.0, "surveys": 4, "detractors": 2}, "Asignaci�n del Cont�ctanos ME Pre Despacho": {"nps": -50.0, "surveys": 4, "detractors": 3}, "Reversa": {"nps": 100.0, "surveys": 3, "detractors": 0}, "Marketplace Kangu": {"nps": 100.0, "surveys": 1, "detractors": 0}, "PNR MP OFF": {"nps": 100.0, "surveys": 1, "detractors": 0}, "Reputaci�n ML Masivos": {"nps": -100.0, "surveys": 1, "detractors": 1}, "Asignaci�n del Cont�ctanos Pre Venta": {"nps": -100.0, "surveys": 1, "detractors": 1}, "Suspensiones ME": {"nps": 100.0, "surveys": 1, "detractors": 0}}, "Mature": {"Reputaci�n ME": {"nps": 60.05, "surveys": 403, "detractors": 69}, "Reputaci�n": {"nps": 57.41, "surveys": 378, "detractors": 72}, "Post Compra Funcionalidades Vendedor": {"nps": 41.52, "surveys": 224, "detractors": 51}, "Despacho Ventas y Publicaciones": {"nps": 60.0, "surveys": 205, "detractors": 32}, "Reversa": {"nps": 68.91, "surveys": 119, "detractors": 15}, "Gestiones Operativas": {"nps": 45.71, "surveys": 70, "detractors": 16}, "Gesti�n de Publicaci�n": {"nps": 55.74, "surveys": 61, "detractors": 11}, "Potenciar Ventas": {"nps": 47.73, "surveys": 44, "detractors": 8}, "Viaje del paquete - Vendedor": {"nps": 52.5, "surveys": 40, "detractors": 7}, "PR - T�cnica prohibida": {"nps": 67.74, "surveys": 31, "detractors": 4}, "PR - Propiedad intelectual": {"nps": 35.71, "surveys": 14, "detractors": 4}, "Calidad de foto": {"nps": 76.92, "surveys": 13, "detractors": 1}, "PR - Art�culos prohibidos": {"nps": 0.0, "surveys": 8, "detractors": 4}, "Antes de publicar": {"nps": 100.0, "surveys": 5, "detractors": 0}, "Anulaci�n de Venta": {"nps": -33.33, "surveys": 3, "detractors": 2}, "PR - Datos Personales": {"nps": 100.0, "surveys": 1, "detractors": 0}, "Asignaci�n del cont�ctanos Mature ME": {"nps": 100.0, "surveys": 1, "detractors": 0}}, "Meli Pro": {"Reputaci�n": {"nps": 83.51, "surveys": 97, "detractors": 7}, "Post Compra Funcionalidades Vendedor": {"nps": 59.26, "surveys": 54, "detractors": 9}, "Reputaci�n ME": {"nps": 84.09, "surveys": 44, "detractors": 3}, "Despacho Ventas y Publicaciones": {"nps": 66.67, "surveys": 27, "detractors": 3}, "Reversa": {"nps": 88.89, "surveys": 18, "detractors": 1}, "Gestiones Operativas": {"nps": 93.75, "surveys": 16, "detractors": 0}, "Viaje del paquete - Vendedor": {"nps": 73.33, "surveys": 15, "detractors": 2}, "PR - T�cnica prohibida": {"nps": 100.0, "surveys": 11, "detractors": 0}, "Gesti�n de Publicaci�n": {"nps": 30.0, "surveys": 10, "detractors": 3}, "Potenciar Ventas": {"nps": 100.0, "surveys": 5, "detractors": 0}, "Antes de publicar": {"nps": 100.0, "surveys": 2, "detractors": 0}, "PR - Art�culos prohibidos": {"nps": 100.0, "surveys": 2, "detractors": 0}, "Anulaci�n de Venta": {"nps": 100.0, "surveys": 1, "detractors": 0}, "PR - Propiedad intelectual": {"nps": 100.0, "surveys": 1, "detractors": 0}, "Calidad de foto": {"nps": 0.0, "surveys": 1, "detractors": 0}}}, "2026-02": {"Longtail": {"Viaje del paquete - Comprador": {"nps": 53.81, "surveys": 3968, "detractors": 681}, "Drivers": {"nps": 72.9, "surveys": 1771, "detractors": 167}, "Afiliados ML": {"nps": 71.93, "surveys": 1514, "detractors": 152}, "Reputaci�n": {"nps": 59.04, "surveys": 1360, "detractors": 226}, "Despacho Ventas y Publicaciones": {"nps": 55.89, "surveys": 1070, "detractors": 180}, "Reputaci�n ME": {"nps": 81.88, "surveys": 938, "detractors": 60}, "Post Compra Funcionalidades Vendedor": {"nps": 38.87, "surveys": 512, "detractors": 134}, "Places Kangu": {"nps": 69.11, "surveys": 463, "detractors": 55}, "Gestiones Operativas": {"nps": 66.96, "surveys": 460, "detractors": 59}, "PR - T�cnica prohibida": {"nps": 77.01, "surveys": 422, "detractors": 33}, "Gesti�n de Publicaci�n": {"nps": 57.98, "surveys": 307, "detractors": 46}, "Jornada de la entrega": {"nps": 59.04, "surveys": 293, "detractors": 44}, "Potenciar Ventas": {"nps": 59.79, "surveys": 291, "detractors": 43}, "Antes de publicar": {"nps": 83.39, "surveys": 289, "detractors": 14}, "Emision de Nota Fiscal": {"nps": 57.04, "surveys": 284, "detractors": 51}, "PR - Propiedad intelectual": {"nps": 70.79, "surveys": 267, "detractors": 29}, "PR - Art�culos prohibidos": {"nps": 25.97, "surveys": 231, "detractors": 72}, "Facturaci�n": {"nps": 50.23, "surveys": 221, "detractors": 43}, "Viaje del paquete - Vendedor": {"nps": 64.96, "surveys": 137, "detractors": 16}, "Denuncia de usuario": {"nps": 66.93, "surveys": 127, "detractors": 17}, "Calidad de foto": {"nps": 86.11, "surveys": 72, "detractors": 3}, "Datos fiscales": {"nps": 56.52, "surveys": 69, "detractors": 11}, "Reversa": {"nps": 44.9, "surveys": 49, "detractors": 12}, "Anulaci�n de Venta": {"nps": 62.22, "surveys": 45, "detractors": 6}, "PR - Datos Personales": {"nps": 50.0, "surveys": 22, "detractors": 5}, "Costos de env�o - Comprador": {"nps": 42.86, "surveys": 21, "detractors": 5}, "Guardia Urbana": {"nps": 100.0, "surveys": 5, "detractors": 0}, "Marketplace Kangu": {"nps": -66.67, "surveys": 3, "detractors": 2}, "Suspensiones ME": {"nps": 100.0, "surveys": 3, "detractors": 0}, "Asignaci�n del Contactanos Post Venta": {"nps": -100.0, "surveys": 2, "detractors": 2}, "Asignaci�n del Cont�ctanos ME Pre Despacho": {"nps": -100.0, "surveys": 2, "detractors": 2}, "Posterior a la Entrega": {"nps": -100.0, "surveys": 1, "detractors": 1}, "Asignaci�n del Cont�ctanos Pre Venta": {"nps": -100.0, "surveys": 1, "detractors": 1}}, "Mature": {"Reputaci�n": {"nps": 62.1, "surveys": 372, "detractors": 53}, "Reputaci�n ME": {"nps": 65.87, "surveys": 293, "detractors": 37}, "Post Compra Funcionalidades Vendedor": {"nps": 55.17, "surveys": 261, "detractors": 46}, "Despacho Ventas y Publicaciones": {"nps": 51.66, "surveys": 211, "detractors": 39}, "Reversa": {"nps": 56.39, "surveys": 133, "detractors": 24}, "Gestiones Operativas": {"nps": 60.0, "surveys": 80, "detractors": 12}, "Gesti�n de Publicaci�n": {"nps": 71.43, "surveys": 56, "detractors": 6}, "Viaje del paquete - Vendedor": {"nps": 50.0, "surveys": 26, "detractors": 5}, "Potenciar Ventas": {"nps": 57.89, "surveys": 19, "detractors": 3}, "PR - T�cnica prohibida": {"nps": 100.0, "surveys": 16, "detractors": 0}, "PR - Propiedad intelectual": {"nps": 41.67, "surveys": 12, "detractors": 3}, "PR - Art�culos prohibidos": {"nps": 75.0, "surveys": 8, "detractors": 1}, "Calidad de foto": {"nps": 100.0, "surveys": 6, "detractors": 0}, "Antes de publicar": {"nps": 16.67, "surveys": 6, "detractors": 2}, "Asignaci�n del cont�ctanos Mature Ventas": {"nps": -100.0, "surveys": 3, "detractors": 3}, "Anulaci�n de Venta": {"nps": 0.0, "surveys": 2, "detractors": 1}, "Asignaci�n del cont�ctanos Mature Publicaciones": {"nps": 0.0, "surveys": 1, "detractors": 0}}, "Meli Pro": {"Reputaci�n": {"nps": 75.0, "surveys": 84, "detractors": 9}, "Reputaci�n ME": {"nps": 79.55, "surveys": 44, "detractors": 4}, "Post Compra Funcionalidades Vendedor": {"nps": 56.25, "surveys": 32, "detractors": 7}, "Reversa": {"nps": 71.43, "surveys": 21, "detractors": 3}, "Despacho Ventas y Publicaciones": {"nps": 92.86, "surveys": 14, "detractors": 0}, "PR - T�cnica prohibida": {"nps": 100.0, "surveys": 13, "detractors": 0}, "Gestiones Operativas": {"nps": 88.89, "surveys": 9, "detractors": 0}, "Potenciar Ventas": {"nps": 71.43, "surveys": 7, "detractors": 0}, "Gesti�n de Publicaci�n": {"nps": 16.67, "surveys": 6, "detractors": 2}, "Viaje del paquete - Vendedor": {"nps": 80.0, "surveys": 5, "detractors": 0}, "PR - Propiedad intelectual": {"nps": 50.0, "surveys": 2, "detractors": 0}, "Calidad de foto": {"nps": 100.0, "surveys": 2, "detractors": 0}, "PR - Datos Personales": {"nps": 100.0, "surveys": 1, "detractors": 0}, "PR - Art�culos prohibidos": {"nps": 100.0, "surveys": 1, "detractors": 0}}}, "2026-03": {"Longtail": {"Drivers": {"nps": 66.74, "surveys": 2279, "detractors": 278}, "Viaje del paquete - Comprador": {"nps": 48.32, "surveys": 2264, "detractors": 452}, "Afiliados ML": {"nps": 70.67, "surveys": 1715, "detractors": 179}, "Reputaci�n ME": {"nps": 78.61, "surveys": 1262, "detractors": 89}, "Reputaci�n": {"nps": 63.2, "surveys": 1242, "detractors": 183}, "Despacho Ventas y Publicaciones": {"nps": 55.07, "surveys": 1115, "detractors": 196}, "Post Compra Funcionalidades Vendedor": {"nps": 46.48, "surveys": 697, "detractors": 151}, "Places Kangu": {"nps": 70.15, "surveys": 526, "detractors": 59}, "Gestiones Operativas": {"nps": 66.92, "surveys": 390, "detractors": 44}, "Reversa": {"nps": 51.57, "surveys": 382, "detractors": 75}, "PR - T�cnica prohibida": {"nps": 74.11, "surveys": 336, "detractors": 27}, "Gesti�n de Publicaci�n": {"nps": 60.4, "surveys": 298, "detractors": 43}, "Facturaci�n": {"nps": 28.14, "surveys": 295, "detractors": 93}, "PR - Propiedad intelectual": {"nps": 70.82, "surveys": 281, "detractors": 33}, "Potenciar Ventas": {"nps": 58.06, "surveys": 279, "detractors": 45}, "Antes de publicar": {"nps": 74.82, "surveys": 274, "detractors": 20}, "Viaje del paquete - Vendedor": {"nps": 64.89, "surveys": 225, "detractors": 27}, "Emision de Nota Fiscal": {"nps": 52.44, "surveys": 225, "detractors": 39}, "PR - Art�culos prohibidos": {"nps": 44.54, "surveys": 119, "detractors": 28}, "Denuncia de usuario": {"nps": 61.54, "surveys": 117, "detractors": 16}, "Datos fiscales": {"nps": 65.57, "surveys": 61, "detractors": 8}, "Calidad de foto": {"nps": 83.93, "surveys": 56, "detractors": 3}, "Anulaci�n de Venta": {"nps": 34.04, "surveys": 47, "detractors": 13}, "Jornada de la entrega": {"nps": 58.14, "surveys": 43, "detractors": 6}, "Costos de env�o - Comprador": {"nps": 52.17, "surveys": 23, "detractors": 5}, "PR - Datos Personales": {"nps": 52.94, "surveys": 17, "detractors": 4}, "Asignaci�n del Contactanos Post Venta": {"nps": -100.0, "surveys": 4, "detractors": 4}, "Suspensiones ME": {"nps": 0.0, "surveys": 3, "detractors": 1}, "Asignaci�n del cont�ctanos Mature Ventas": {"nps": 33.33, "surveys": 3, "detractors": 1}, "Guardia Urbana": {"nps": 100.0, "surveys": 2, "detractors": 0}, "Asignaci�n del Cont�ctanos ME Pre Despacho": {"nps": 0.0, "surveys": 1, "detractors": 0}}, "Mature": {"Reputaci�n": {"nps": 64.47, "surveys": 394, "detractors": 52}, "Reputaci�n ME": {"nps": 71.75, "surveys": 269, "detractors": 25}, "Post Compra Funcionalidades Vendedor": {"nps": 54.79, "surveys": 261, "detractors": 47}, "Despacho Ventas y Publicaciones": {"nps": 51.58, "surveys": 221, "detractors": 39}, "Reversa": {"nps": 67.53, "surveys": 154, "detractors": 20}, "Gestiones Operativas": {"nps": 46.79, "surveys": 109, "detractors": 20}, "Gesti�n de Publicaci�n": {"nps": 41.38, "surveys": 58, "detractors": 13}, "Potenciar Ventas": {"nps": 56.41, "surveys": 39, "detractors": 5}, "Viaje del paquete - Vendedor": {"nps": 75.68, "surveys": 37, "detractors": 2}, "PR - T�cnica prohibida": {"nps": 62.86, "surveys": 35, "detractors": 4}, "PR - Propiedad intelectual": {"nps": 82.76, "surveys": 29, "detractors": 2}, "PR - Art�culos prohibidos": {"nps": 100.0, "surveys": 6, "detractors": 0}, "Calidad de foto": {"nps": 83.33, "surveys": 6, "detractors": 0}, "Antes de publicar": {"nps": -33.33, "surveys": 3, "detractors": 2}, "Anulaci�n de Venta": {"nps": 50.0, "surveys": 2, "detractors": 0}}, "Meli Pro": {"Reputaci�n": {"nps": 75.81, "surveys": 62, "detractors": 7}, "Reputaci�n ME": {"nps": 70.97, "surveys": 31, "detractors": 4}, "Post Compra Funcionalidades Vendedor": {"nps": 60.0, "surveys": 25, "detractors": 4}, "Despacho Ventas y Publicaciones": {"nps": 38.46, "surveys": 13, "detractors": 3}, "Reversa": {"nps": 81.82, "surveys": 11, "detractors": 1}, "Gestiones Operativas": {"nps": 71.43, "surveys": 7, "detractors": 1}, "PR - T�cnica prohibida": {"nps": 100.0, "surveys": 6, "detractors": 0}, "Gesti�n de Publicaci�n": {"nps": -20.0, "surveys": 5, "detractors": 3}, "Viaje del paquete - Vendedor": {"nps": 80.0, "surveys": 5, "detractors": 0}, "Potenciar Ventas": {"nps": -100.0, "surveys": 4, "detractors": 4}, "PR - Propiedad intelectual": {"nps": 100.0, "surveys": 3, "detractors": 0}, "PR - Art�culos prohibidos": {"nps": 100.0, "surveys": 2, "detractors": 0}, "Anulaci�n de Venta": {"nps": 100.0, "surveys": 1, "detractors": 0}, "Calidad de foto": {"nps": 100.0, "surveys": 1, "detractors": 0}}}, "2026-04": {"Longtail": {"Despacho Ventas y Publicaciones": {"nps": 58.96, "surveys": 502, "detractors": 77}, "Drivers": {"nps": 65.6, "surveys": 500, "detractors": 61}, "Reputaci�n ME": {"nps": 82.73, "surveys": 417, "detractors": 23}, "Afiliados ML": {"nps": 67.09, "surveys": 392, "detractors": 46}, "Viaje del paquete - Comprador": {"nps": 42.77, "surveys": 332, "detractors": 76}, "Reputaci�n": {"nps": 60.94, "surveys": 320, "detractors": 50}, "Places Kangu": {"nps": 67.52, "surveys": 157, "detractors": 19}, "Post Compra Funcionalidades Vendedor": {"nps": 45.39, "surveys": 141, "detractors": 32}, "Emision de Nota Fiscal": {"nps": 63.7, "surveys": 135, "detractors": 19}, "PR - T�cnica prohibida": {"nps": 66.0, "surveys": 100, "detractors": 12}, "Reversa": {"nps": 73.2, "surveys": 97, "detractors": 7}, "Gesti�n de Publicaci�n": {"nps": 65.88, "surveys": 85, "detractors": 9}, "Gestiones Operativas": {"nps": 65.0, "surveys": 80, "detractors": 10}, "PR - Propiedad intelectual": {"nps": 56.96, "surveys": 79, "detractors": 14}, "Potenciar Ventas": {"nps": 44.29, "surveys": 70, "detractors": 14}, "Facturaci�n": {"nps": 38.1, "surveys": 63, "detractors": 17}, "Antes de publicar": {"nps": 67.92, "surveys": 53, "detractors": 4}, "PR - Art�culos prohibidos": {"nps": 57.69, "surveys": 52, "detractors": 10}, "Viaje del paquete - Vendedor": {"nps": 35.71, "surveys": 42, "detractors": 9}, "Denuncia de usuario": {"nps": 71.43, "surveys": 28, "detractors": 3}, "Datos fiscales": {"nps": 23.53, "surveys": 17, "detractors": 6}, "Anulaci�n de Venta": {"nps": 53.33, "surveys": 15, "detractors": 3}, "Calidad de foto": {"nps": 53.33, "surveys": 15, "detractors": 3}, "Jornada de la entrega": {"nps": 73.33, "surveys": 15, "detractors": 1}, "PR - Datos Personales": {"nps": 8.33, "surveys": 12, "detractors": 5}, "Costos de env�o - Comprador": {"nps": 33.33, "surveys": 6, "detractors": 1}, "Guardia Urbana": {"nps": 100.0, "surveys": 2, "detractors": 0}, "Suspensiones ME": {"nps": 0.0, "surveys": 2, "detractors": 1}, "Cancelaci�n de cuenta": {"nps": -100.0, "surveys": 1, "detractors": 1}, "Denuncia de fraude": {"nps": -100.0, "surveys": 1, "detractors": 1}, "Asignaci�n del Cont�ctanos ME Pre Despacho": {"nps": 100.0, "surveys": 1, "detractors": 0}, "Marketplace Kangu": {"nps": -100.0, "surveys": 1, "detractors": 1}, "Problemas de seguridad": {"nps": 100.0, "surveys": 1, "detractors": 0}}, "Mature": {"Reputaci�n": {"nps": 61.76, "surveys": 102, "detractors": 15}, "Post Compra Funcionalidades Vendedor": {"nps": 61.33, "surveys": 75, "detractors": 13}, "Reputaci�n ME": {"nps": 63.24, "surveys": 68, "detractors": 11}, "Despacho Ventas y Publicaciones": {"nps": 66.07, "surveys": 56, "detractors": 7}, "Gestiones Operativas": {"nps": 77.27, "surveys": 22, "detractors": 1}, "Reversa": {"nps": 61.9, "surveys": 21, "detractors": 3}, "Gesti�n de Publicaci�n": {"nps": 53.33, "surveys": 15, "detractors": 2}, "Viaje del paquete - Vendedor": {"nps": 60.0, "surveys": 10, "detractors": 1}, "Potenciar Ventas": {"nps": 50.0, "surveys": 8, "detractors": 1}, "PR - T�cnica prohibida": {"nps": 100.0, "surveys": 5, "detractors": 0}, "PR - Propiedad intelectual": {"nps": 100.0, "surveys": 3, "detractors": 0}, "Anulaci�n de Venta": {"nps": -100.0, "surveys": 1, "detractors": 1}, "PR - Art�culos prohibidos": {"nps": -100.0, "surveys": 1, "detractors": 1}, "Antes de publicar": {"nps": 0.0, "surveys": 1, "detractors": 0}}, "Meli Pro": {"Reputaci�n": {"nps": 69.23, "surveys": 13, "detractors": 1}, "Post Compra Funcionalidades Vendedor": {"nps": 75.0, "surveys": 8, "detractors": 1}, "Reversa": {"nps": 0.0, "surveys": 4, "detractors": 2}, "Reputaci�n ME": {"nps": 50.0, "surveys": 4, "detractors": 1}, "PR - T�cnica prohibida": {"nps": 0.0, "surveys": 2, "detractors": 1}, "Despacho Ventas y Publicaciones": {"nps": 100.0, "surveys": 2, "detractors": 0}, "Gesti�n de Publicaci�n": {"nps": 100.0, "surveys": 2, "detractors": 0}, "Viaje del paquete - Vendedor": {"nps": 100.0, "surveys": 1, "detractors": 0}, "PR - Propiedad intelectual": {"nps": 100.0, "surveys": 1, "detractors": 0}, "Gestiones Operativas": {"nps": 100.0, "surveys": 1, "detractors": 0}}}, "Q1": {"Longtail": {"Viaje del paquete - Comprador": {"nps": 52.84, "surveys": 10258, "detractors": 1827}, "Afiliados ML": {"nps": 71.13, "surveys": 5348, "detractors": 552}, "Reputaci�n ME": {"nps": 81.71, "surveys": 3936, "detractors": 235}, "Drivers": {"nps": 69.21, "surveys": 5762, "detractors": 636}, "Reputaci�n": {"nps": 59.85, "surveys": 4284, "detractors": 706}, "Despacho Ventas y Publicaciones": {"nps": 54.78, "surveys": 3658, "detractors": 650}, "Gestiones Operativas": {"nps": 67.6, "surveys": 1534, "detractors": 182}, "Post Compra Funcionalidades Vendedor": {"nps": 40.41, "surveys": 1804, "detractors": 452}, "Places Kangu": {"nps": 69.47, "surveys": 1523, "detractors": 171}, "Antes de publicar": {"nps": 82.28, "surveys": 999, "detractors": 51}, "Emision de Nota Fiscal": {"nps": 60.02, "surveys": 938, "detractors": 146}, "Potenciar Ventas": {"nps": 59.3, "surveys": 941, "detractors": 142}, "PR - T�cnica prohibida": {"nps": 75.83, "surveys": 1113, "detractors": 91}, "Facturaci�n": {"nps": 41.75, "surveys": 867, "detractors": 212}, "Gesti�n de Publicaci�n": {"nps": 56.46, "surveys": 944, "detractors": 156}, "PR - Propiedad intelectual": {"nps": 68.16, "surveys": 873, "detractors": 106}, "Durante la Entrega": {"nps": 55.31, "surveys": 273, "detractors": 48}, "Viaje del paquete - Vendedor": {"nps": 65.84, "surveys": 565, "detractors": 69}, "Denuncia de usuario": {"nps": 67.76, "surveys": 428, "detractors": 53}, "PR - Art�culos prohibidos": {"nps": 38.89, "surveys": 522, "detractors": 135}, "Datos fiscales": {"nps": 62.84, "surveys": 261, "detractors": 36}, "Calidad de foto": {"nps": 80.0, "surveys": 210, "detractors": 15}, "Anulaci�n de Venta": {"nps": 51.18, "surveys": 170, "detractors": 31}, "PR - Datos Personales": {"nps": 71.0, "surveys": 100, "detractors": 12}, "Costos de env�o - Comprador": {"nps": 27.78, "surveys": 90, "detractors": 29}, "MercadoShops": {"nps": 35.71, "surveys": 14, "detractors": 4}, "Guardia Urbana": {"nps": 84.62, "surveys": 13, "detractors": 1}, "Posterior a la Entrega": {"nps": 16.67, "surveys": 6, "detractors": 2}, "Asignaci�n del Contactanos Post Venta": {"nps": -60.0, "surveys": 10, "detractors": 8}, "Asignaci�n del Cont�ctanos ME Pre Despacho": {"nps": -57.14, "surveys": 7, "detractors": 5}, "Reversa": {"nps": 51.15, "surveys": 434, "detractors": 87}, "Marketplace Kangu": {"nps": -25.0, "surveys": 4, "detractors": 2}, "PNR MP OFF": {"nps": 100.0, "surveys": 1, "detractors": 0}, "Reputaci�n ML Masivos": {"nps": -100.0, "surveys": 1, "detractors": 1}, "Asignaci�n del Cont�ctanos Pre Venta": {"nps": -100.0, "surveys": 2, "detractors": 2}, "Suspensiones ME": {"nps": 57.14, "surveys": 7, "detractors": 1}, "Jornada de la entrega": {"nps": 58.93, "surveys": 336, "detractors": 50}, "Asignaci�n del cont�ctanos Mature Ventas": {"nps": 33.33, "surveys": 3, "detractors": 1}}, "Mature": {"Reputaci�n ME": {"nps": 65.08, "surveys": 965, "detractors": 131}, "Reputaci�n": {"nps": 61.36, "surveys": 1144, "detractors": 177}, "Post Compra Funcionalidades Vendedor": {"nps": 50.94, "surveys": 746, "detractors": 144}, "Despacho Ventas y Publicaciones": {"nps": 54.32, "surveys": 637, "detractors": 110}, "Reversa": {"nps": 64.29, "surveys": 406, "detractors": 59}, "Gestiones Operativas": {"nps": 50.58, "surveys": 259, "detractors": 48}, "Gesti�n de Publicaci�n": {"nps": 56.0, "surveys": 175, "detractors": 30}, "Potenciar Ventas": {"nps": 52.94, "surveys": 102, "detractors": 16}, "Viaje del paquete - Vendedor": {"nps": 60.19, "surveys": 103, "detractors": 14}, "PR - T�cnica prohibida": {"nps": 71.95, "surveys": 82, "detractors": 8}, "PR - Propiedad intelectual": {"nps": 61.82, "surveys": 55, "detractors": 9}, "Calidad de foto": {"nps": 84.0, "surveys": 25, "detractors": 1}, "PR - Art�culos prohibidos": {"nps": 54.55, "surveys": 22, "detractors": 5}, "Antes de publicar": {"nps": 35.71, "surveys": 14, "detractors": 4}, "Anulaci�n de Venta": {"nps": 0.0, "surveys": 7, "detractors": 3}, "PR - Datos Personales": {"nps": 100.0, "surveys": 1, "detractors": 0}, "Asignaci�n del cont�ctanos Mature ME": {"nps": 100.0, "surveys": 1, "detractors": 0}, "Asignaci�n del cont�ctanos Mature Ventas": {"nps": -100.0, "surveys": 3, "detractors": 3}, "Asignaci�n del cont�ctanos Mature Publicaciones": {"nps": 0.0, "surveys": 1, "detractors": 0}}, "Meli Pro": {"Reputaci�n": {"nps": 78.6, "surveys": 243, "detractors": 23}, "Post Compra Funcionalidades Vendedor": {"nps": 58.56, "surveys": 111, "detractors": 20}, "Reputaci�n ME": {"nps": 78.99, "surveys": 119, "detractors": 11}, "Despacho Ventas y Publicaciones": {"nps": 66.67, "surveys": 54, "detractors": 6}, "Reversa": {"nps": 80.0, "surveys": 50, "detractors": 5}, "Gestiones Operativas": {"nps": 87.5, "surveys": 32, "detractors": 1}, "Viaje del paquete - Vendedor": {"nps": 76.0, "surveys": 25, "detractors": 2}, "PR - T�cnica prohibida": {"nps": 100.0, "surveys": 30, "detractors": 0}, "Gesti�n de Publicaci�n": {"nps": 14.29, "surveys": 21, "detractors": 8}, "Potenciar Ventas": {"nps": 37.5, "surveys": 16, "detractors": 4}, "Antes de publicar": {"nps": 100.0, "surveys": 2, "detractors": 0}, "PR - Art�culos prohibidos": {"nps": 100.0, "surveys": 5, "detractors": 0}, "Anulaci�n de Venta": {"nps": 100.0, "surveys": 2, "detractors": 0}, "PR - Propiedad intelectual": {"nps": 83.33, "surveys": 6, "detractors": 0}, "Calidad de foto": {"nps": 75.0, "surveys": 4, "detractors": 0}, "PR - Datos Personales": {"nps": 100.0, "surveys": 1, "detractors": 0}}}};
+const ALL_PROCS  = ["Viaje del paquete - Comprador", "Drivers", "Afiliados ML", "Reputaci�n", "Reputaci�n ME", "Despacho Ventas y Publicaciones", "Post Compra Funcionalidades Vendedor", "Gestiones Operativas", "Places Kangu", "PR - T�cnica prohibida", "Antes de publicar", "Gesti�n de Publicaci�n", "Potenciar Ventas", "Emision de Nota Fiscal", "PR - Propiedad intelectual", "Facturaci�n", "Viaje del paquete - Vendedor", "PR - Art�culos prohibidos", "Reversa", "Denuncia de usuario", "Jornada de la entrega", "Durante la Entrega", "Datos fiscales", "Calidad de foto", "Anulaci�n de Venta", "PR - Datos Personales", "Costos de env�o - Comprador", "MercadoShops", "Guardia Urbana", "Asignaci�n del Contactanos Post Venta", "Asignaci�n del Cont�ctanos ME Pre Despacho", "Suspensiones ME", "Posterior a la Entrega", "Marketplace Kangu", "Asignaci�n del cont�ctanos Mature Ventas", "Asignaci�n del Cont�ctanos Pre Venta", "Cancelaci�n de cuenta", "Reputaci�n ML Masivos", "Problemas de seguridad", "Denuncia de fraude", "PNR MP OFF", "Asignaci�n del cont�ctanos Mature Publicaciones", "Asignaci�n del cont�ctanos Mature ME"];
+const Q1_MONTHS  = ["2026-01", "2026-02", "2026-03"];
+
+let currentPeriod = '2026-04';
+let currentSort   = 'vol';
+
+function npsColor(v) {
+  return v < 60 ? '#e74c3c' : v < 70 ? '#f39c12' : '#27ae60';
+}
+
+function npsCell(nps, surveys) {
+  if (!surveys) return '<td class="muted">—</td>';
+  const col = npsColor(nps);
+  return `<td class="nps-cell" style="color:${col}">${nps.toFixed(1)}%<br><small>${surveys.toLocaleString('pt-BR')} pesq</small></td>`;
+}
+
+function gapCell(ltNps, ltSvys, mtNps, mtSvys, mpNps, mpSvys) {
+  const cands = [];
+  if (mtSvys >= 3) cands.push({nps: mtNps, nm: 'Mature'});
+  if (mpSvys >= 3) cands.push({nps: mpNps, nm: 'Meli Pro'});
+  if (!cands.length || ltSvys < 3) return '<td class="muted">—</td>';
+  const best = cands.reduce((a, b) => a.nps > b.nps ? a : b);
+  const gap  = Math.round((ltNps - best.nps) * 10) / 10;
+  const cls  = gap <= -5 ? 'down' : gap >= 5 ? 'up' : 'neutral';
+  return `<td class="${cls}">${gap >= 0 ? '▲ +' : '▼ '}${gap} pp <span style="color:#ccc;font-weight:400">vs ${best.nm}</span></td>`;
+}
+
+function getGapVal(proc, d) {
+  const lt = (d['Longtail']  || {})[proc] || {};
+  const mt = (d['Mature']    || {})[proc] || {};
+  const mp = (d['Meli Pro']  || {})[proc] || {};
+  const cands = [];
+  if ((mt.surveys || 0) >= 3) cands.push(mt.nps || 0);
+  if ((mp.surveys || 0) >= 3) cands.push(mp.nps || 0);
+  if (!cands.length || (lt.surveys || 0) < 3) return null;
+  return (lt.nps || 0) - Math.max(...cands);
+}
+
+// Agrega N períodos (para Q1 dinâmico)
+function aggPeriods(keys) {
+  const acc = {};
+  for (const k of keys) {
+    const d = PROC_DATA[k] || {};
+    for (const sn of ['Longtail', 'Mature', 'Meli Pro']) {
+      if (!acc[sn]) acc[sn] = {};
+      const procs = d[sn] || {};
+      for (const [proc, v] of Object.entries(procs)) {
+        if (!acc[sn][proc]) acc[sn][proc] = {p: 0, d: 0, s: 0};
+        acc[sn][proc].p += (v.surveys - v.detractors) * 0; // placeholder
+        acc[sn][proc].s += v.surveys || 0;
+        acc[sn][proc].d += v.detractors || 0;
+        // promoters = surveys*(nps/100) + detractors... inverse: p = svys*nps/100 + d
+        // Actually we store nps and surveys — need to reconstruct promoters
+        // nps = (p - d) / s * 100 → p = nps*s/100 + d
+        acc[sn][proc].p += (v.nps * v.surveys / 100) + v.detractors * 0;
+      }
+    }
+  }
+  // Recompute NPS from reconstructed promoters — but we only have nps+surveys+detractors
+  // So recompute: promoters = (nps/100)*surveys + detractors
+  const result = {};
+  for (const sn of ['Longtail', 'Mature', 'Meli Pro']) {
+    result[sn] = {};
+    for (const [proc, v] of Object.entries(acc[sn] || {})) {
+      if (!v.s) continue;
+      // We can reconstruct: collect individual nps*surveys sums and det sums
+      result[sn][proc] = { surveys: 0, detractors: 0, _nps_x_s: 0 };
+    }
+  }
+  // Redo with correct math
+  for (const sn of ['Longtail', 'Mature', 'Meli Pro']) {
+    result[sn] = {};
+    for (const k of keys) {
+      const procs = (PROC_DATA[k] || {})[sn] || {};
+      for (const [proc, v] of Object.entries(procs)) {
+        if (!result[sn][proc]) result[sn][proc] = { surveys: 0, detractors: 0, promoters: 0 };
+        const svys = v.surveys || 0;
+        const det  = v.detractors || 0;
+        const prom = Math.round((v.nps / 100) * svys + det); // p = nps*s/100 + d
+        result[sn][proc].surveys    += svys;
+        result[sn][proc].detractors += det;
+        result[sn][proc].promoters  += prom;
+      }
+    }
+    for (const [proc, v] of Object.entries(result[sn])) {
+      v.nps = v.surveys > 0 ? Math.round((v.promoters - v.detractors) / v.surveys * 1000) / 10 : 0;
+    }
+  }
+  return result;
+}
+
+function getPeriodData() {
+  if (currentPeriod === 'Q1') {
+    return aggPeriods(Q1_MONTHS);
+  }
+  return PROC_DATA[currentPeriod] || {};
+}
+
+function renderProcTable() {
+  const d  = getPeriodData();
+  const lt = d['Longtail']  || {};
+  const mt = d['Mature']    || {};
+  const mp = d['Meli Pro']  || {};
+
+  let procs = [...ALL_PROCS];
+
+  if (currentSort === 'lt-asc') {
+    procs.sort((a, b) => (lt[a]?.nps ?? 999) - (lt[b]?.nps ?? 999));
+  } else if (currentSort === 'lt-desc') {
+    procs.sort((a, b) => (lt[b]?.nps ?? -1) - (lt[a]?.nps ?? -1));
+  } else if (currentSort === 'gap-asc') {
+    procs.sort((a, b) => (getGapVal(a, d) ?? 999) - (getGapVal(b, d) ?? 999));
+  } else if (currentSort === 'gap-desc') {
+    procs.sort((a, b) => (getGapVal(b, d) ?? -999) - (getGapVal(a, d) ?? -999));
+  } else {
+    procs.sort((a, b) => (lt[b]?.surveys ?? 0) - (lt[a]?.surveys ?? 0));
+  }
+
+  let html = '';
+  for (const proc of procs) {
+    const ltD = lt[proc] || {nps: 0, surveys: 0, detractors: 0};
+    const mtD = mt[proc] || {nps: 0, surveys: 0};
+    const mpD = mp[proc] || {nps: 0, surveys: 0};
+    html += `<tr>
+      <td>${proc}</td>
+      ${npsCell(ltD.nps, ltD.surveys)}
+      ${npsCell(mtD.nps, mtD.surveys)}
+      ${npsCell(mpD.nps, mpD.surveys)}
+      ${gapCell(ltD.nps, ltD.surveys, mtD.nps, mtD.surveys, mpD.nps, mpD.surveys)}
+    </tr>`;
+  }
+  document.getElementById('proc-tbody').innerHTML = html;
+}
+
+function filterPeriod(key) {
+  currentPeriod = key;
+  document.querySelectorAll('.filt-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('filt-' + key)?.classList.add('active');
+  renderProcTable();
+}
+
+function setSort(s) {
+  currentSort = s;
+  document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sort-' + s)?.classList.add('active');
+  renderProcTable();
+}
+
+// Trend chart
+new Chart(document.getElementById('chartTrend'), {
+  type: 'line',
+  data: {
+    labels: CHART_DATA.labels,
+    datasets: [
+      { label:'Longtail', data:CHART_DATA.longtail, borderColor:'#e74c3c', borderWidth:2.5, tension:0.35, fill:false, pointRadius:4, pointHoverRadius:6 },
+      { label:'Mature',   data:CHART_DATA.mature,   borderColor:'#3498db', borderWidth:2.5, tension:0.35, fill:false, pointRadius:4, pointHoverRadius:6 },
+      { label:'Meli Pro', data:CHART_DATA.melipro,  borderColor:'#9b59b6', borderWidth:2.5, tension:0.35, fill:false, pointRadius:4, pointHoverRadius:6 },
+      { label:'Target',   data:CHART_DATA.targets,  borderColor:'#f39c12', borderWidth:1.5, borderDash:[6,4], pointRadius:0, fill:false },
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    interaction:{ mode:'index', intersect:false },
+    plugins:{ legend:{ display:false } },
+    scales:{
+      y:{ min:40, max:100, ticks:{ callback: v => v+'%', font:{size:10} }, grid:{color:'#f0f2f5'} },
+      x:{ ticks:{ font:{size:10} } }
+    }
+  }
+});
+
+renderProcTable();
+</script>
+</body>
+</html>
