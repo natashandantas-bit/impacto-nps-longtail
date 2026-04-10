@@ -59,6 +59,19 @@
   .proc-kw-list { display: flex; flex-wrap: wrap; gap: 4px; }
   .proc-kw-tag { background: #f0f2f5; color: #555; font-size: 0.67rem; padding: 2px 8px; border-radius: 8px; }
   .kw-cnt { color: #bbb; }
+  /* Insights de transcrição */
+  .insight-block { border: 1px solid #e8e0f0; border-radius: 8px; padding: 18px; margin-bottom: 14px; border-left: 5px solid #8e44ad; background: #fdfcff; }
+  .insight-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+  .ins-tag { background: #8e44ad; color: white; font-size: 0.62rem; font-weight: 700; padding: 2px 8px; border-radius: 8px; text-transform: uppercase; white-space: nowrap; }
+  .ins-process { font-size: 0.98rem; font-weight: 700; color: #222; }
+  .ins-metrics { font-size: 0.76rem; color: #999; margin-left: auto; white-space: nowrap; }
+  .insight-finding { font-size: 0.79rem; line-height: 1.65; color: #444; background: #f7f4fc; border-radius: 6px; padding: 12px 14px; margin-bottom: 12px; }
+  .insight-causes { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 5px; }
+  .insight-causes li { font-size: 0.76rem; padding: 6px 10px; border-radius: 5px; color: #333; line-height: 1.45; }
+  .cause-bug  { background: #fde8e8; border-left: 3px solid #e74c3c; }
+  .cause-fcr  { background: #fef3e2; border-left: 3px solid #f39c12; }
+  .cause-gap  { background: #eaf4fb; border-left: 3px solid #3498db; }
+  .cause-tool { background: #fefce8; border-left: 3px solid #d4ac0d; }
 </style>
 </head>
 <body>
@@ -69,7 +82,7 @@
     <div class="badge">Publicaciones · ME Sellers · Ventas</div>
   </div>
   <div class="meta">
-    Atualizado em: <strong>10/04/2026 16:26</strong><br>
+    Atualizado em: <strong>10/04/2026 17:28</strong><br>
     Mês de referência: <strong>April/2026</strong><br>
     Seniority: <strong>Tableau-aligned</strong>
   </div>
@@ -174,12 +187,170 @@
   <!-- Processos Críticos -->
   <div class="card">
     <h2>Processos Críticos — Impacto vs Target · April/2026</h2>
-    <div class="proc-grid"><div class="proc-card"><div class="proc-header"><span class="proc-name" title="Reputación">Reputación</span><span class="proc-impact-badge">-0.76 pp</span></div><div class="proc-metrics"><div class="pm-item"><div class="pm-label">NPS Atual</div><div class="pm-val" style="color:#f39c12">63.2%<span class="down" style="font-size:0.68rem;margin-left:4px">▼0.7</span></div></div><div class="pm-item"><div class="pm-label">Target</div><div class="pm-val" style="color:#f39c12">71.9%</div></div><div class="pm-item"><div class="pm-label">Pesquisas</div><div class="pm-val">372</div></div><div class="pm-item"><div class="pm-label">Detratores</div><div class="pm-val" style="color:#e74c3c">14%</div></div></div><div class="proc-bar-wrap"><div class="proc-bar"><div class="proc-bar-seg" style="width:77.7%;background:#27ae60" title="Promotores 77.7%"></div><div class="proc-bar-seg" style="width:7.8%;background:#f39c12"  title="Passivos 7.8%"></div><div class="proc-bar-seg" style="width:14.5%;background:#e74c3c"  title="Detratores 14.5%"></div></div><div class="proc-bar-legend"><span style="color:#27ae60">78% Prom.</span><span style="color:#f39c12">8% Pas.</span><span style="color:#e74c3c">14% Det.</span></div></div><div class="proc-kw-title">Temas recorrentes (detratores)</div><div class="proc-kw-list"><span class="proc-kw-tag">num num <span class="kw-cnt">(45x)</span></span><span class="proc-kw-tag">falar atendente <span class="kw-cnt">(17x)</span></span><span class="proc-kw-tag">mercado livre <span class="kw-cnt">(7x)</span></span><span class="proc-kw-tag">experiencia compra <span class="kw-cnt">(7x)</span></span><span class="proc-kw-tag">mesmo produto <span class="kw-cnt">(6x)</span></span><span class="proc-kw-tag">essas vendas <span class="kw-cnt">(4x)</span></span></div></div>
-<div class="proc-card"><div class="proc-header"><span class="proc-name" title="Drivers">Drivers</span><span class="proc-impact-badge">-0.74 pp</span></div><div class="proc-metrics"><div class="pm-item"><div class="pm-label">NPS Atual</div><div class="pm-val" style="color:#f39c12">64.7%<span class="down" style="font-size:0.68rem;margin-left:4px">▼2.7</span></div></div><div class="pm-item"><div class="pm-label">Target</div><div class="pm-val" style="color:#f39c12">70.3%</div></div><div class="pm-item"><div class="pm-label">Pesquisas</div><div class="pm-val">558</div></div><div class="pm-item"><div class="pm-label">Detratores</div><div class="pm-val" style="color:#e74c3c">12%</div></div></div><div class="proc-bar-wrap"><div class="proc-bar"><div class="proc-bar-seg" style="width:77.1%;background:#27ae60" title="Promotores 77.1%"></div><div class="proc-bar-seg" style="width:10.6%;background:#f39c12"  title="Passivos 10.6%"></div><div class="proc-bar-seg" style="width:12.4%;background:#e74c3c"  title="Detratores 12.4%"></div></div><div class="proc-bar-legend"><span style="color:#27ae60">77% Prom.</span><span style="color:#f39c12">11% Pas.</span><span style="color:#e74c3c">12% Det.</span></div></div><div class="proc-kw-title">Temas recorrentes (detratores)</div><div class="proc-kw-list"><span class="proc-kw-tag">num num <span class="kw-cnt">(26x)</span></span><span class="proc-kw-tag">num dias <span class="kw-cnt">(17x)</span></span><span class="proc-kw-tag">mercado livre <span class="kw-cnt">(13x)</span></span><span class="proc-kw-tag">mercado libre <span class="kw-cnt">(10x)</span></span><span class="proc-kw-tag">dias uteis <span class="kw-cnt">(9x)</span></span><span class="proc-kw-tag">envio extra <span class="kw-cnt">(9x)</span></span></div></div>
-<div class="proc-card"><div class="proc-header"><span class="proc-name" title="Viaje del paquete - Vendedor">Viaje del paquete - Vendedor</span><span class="proc-impact-badge">-0.39 pp</span></div><div class="proc-metrics"><div class="pm-item"><div class="pm-label">NPS Atual</div><div class="pm-val" style="color:#e74c3c">38.8%<span class="down" style="font-size:0.68rem;margin-left:4px">▼26.8</span></div></div><div class="pm-item"><div class="pm-label">Target</div><div class="pm-val" style="color:#f39c12">72.5%</div></div><div class="pm-item"><div class="pm-label">Pesquisas</div><div class="pm-val">49</div></div><div class="pm-item"><div class="pm-label">Detratores</div><div class="pm-val" style="color:#e74c3c">20%</div></div></div><div class="proc-bar-wrap"><div class="proc-bar"><div class="proc-bar-seg" style="width:59.2%;background:#27ae60" title="Promotores 59.2%"></div><div class="proc-bar-seg" style="width:20.4%;background:#f39c12"  title="Passivos 20.4%"></div><div class="proc-bar-seg" style="width:20.4%;background:#e74c3c"  title="Detratores 20.4%"></div></div><div class="proc-bar-legend"><span style="color:#27ae60">59% Prom.</span><span style="color:#f39c12">20% Pas.</span><span style="color:#e74c3c">20% Det.</span></div></div><div class="proc-kw-title">Temas recorrentes (detratores)</div><div class="proc-kw-list"><span class="proc-kw-tag">dia num <span class="kw-cnt">(8x)</span></span><span class="proc-kw-tag">amor dios <span class="kw-cnt">(7x)</span></span><span class="proc-kw-tag">num num <span class="kw-cnt">(6x)</span></span><span class="proc-kw-tag">ella tiene <span class="kw-cnt">(5x)</span></span><span class="proc-kw-tag">hablar uno <span class="kw-cnt">(5x)</span></span><span class="proc-kw-tag">favor verifique <span class="kw-cnt">(4x)</span></span></div></div>
-<div class="proc-card"><div class="proc-header"><span class="proc-name" title="Potenciar Ventas">Potenciar Ventas</span><span class="proc-impact-badge">-0.33 pp</span></div><div class="proc-metrics"><div class="pm-item"><div class="pm-label">NPS Atual</div><div class="pm-val" style="color:#e74c3c">46.7%<span class="down" style="font-size:0.68rem;margin-left:4px">▼11.1</span></div></div><div class="pm-item"><div class="pm-label">Target</div><div class="pm-val" style="color:#f39c12">65.4%</div></div><div class="pm-item"><div class="pm-label">Pesquisas</div><div class="pm-val">75</div></div><div class="pm-item"><div class="pm-label">Detratores</div><div class="pm-val" style="color:#e74c3c">19%</div></div></div><div class="proc-bar-wrap"><div class="proc-bar"><div class="proc-bar-seg" style="width:65.3%;background:#27ae60" title="Promotores 65.3%"></div><div class="proc-bar-seg" style="width:16.0%;background:#f39c12"  title="Passivos 16.0%"></div><div class="proc-bar-seg" style="width:18.7%;background:#e74c3c"  title="Detratores 18.7%"></div></div><div class="proc-bar-legend"><span style="color:#27ae60">65% Prom.</span><span style="color:#f39c12">16% Pas.</span><span style="color:#e74c3c">19% Det.</span></div></div><div class="proc-kw-title">Temas recorrentes (detratores)</div><div class="proc-kw-list"><span class="proc-kw-tag">num num <span class="kw-cnt">(12x)</span></span><span class="proc-kw-tag">mercado livre <span class="kw-cnt">(12x)</span></span><span class="proc-kw-tag">meus anuncios <span class="kw-cnt">(12x)</span></span><span class="proc-kw-tag">conversar agora <span class="kw-cnt">(10x)</span></span><span class="proc-kw-tag">screen dropdown <span class="kw-cnt">(10x)</span></span><span class="proc-kw-tag">flow token <span class="kw-cnt">(10x)</span></span></div></div>
+    <div class="proc-grid"><div class="proc-card"><div class="proc-header"><span class="proc-name" title="Reputación">Reputación</span><span class="proc-impact-badge">-0.76 pp</span></div><div class="proc-metrics"><div class="pm-item"><div class="pm-label">NPS Atual</div><div class="pm-val" style="color:#f39c12">63.2%<span class="down" style="font-size:0.68rem;margin-left:4px">▼0.7</span></div></div><div class="pm-item"><div class="pm-label">Target</div><div class="pm-val" style="color:#f39c12">71.9%</div></div><div class="pm-item"><div class="pm-label">Pesquisas</div><div class="pm-val">372</div></div><div class="pm-item"><div class="pm-label">Detratores</div><div class="pm-val" style="color:#e74c3c">14%</div></div></div><div class="proc-bar-wrap"><div class="proc-bar"><div class="proc-bar-seg" style="width:77.7%;background:#27ae60" title="Promotores 77.7%"></div><div class="proc-bar-seg" style="width:7.8%;background:#f39c12"  title="Passivos 7.8%"></div><div class="proc-bar-seg" style="width:14.5%;background:#e74c3c"  title="Detratores 14.5%"></div></div><div class="proc-bar-legend"><span style="color:#27ae60">78% Prom.</span><span style="color:#f39c12">8% Pas.</span><span style="color:#e74c3c">14% Det.</span></div></div><div class="proc-kw-title">Temas recorrentes (detratores)</div><div class="proc-kw-list"><span class="proc-kw-tag">num num <span class="kw-cnt">(45x)</span></span><span class="proc-kw-tag">falar atendente <span class="kw-cnt">(20x)</span></span><span class="proc-kw-tag">mercado livre <span class="kw-cnt">(7x)</span></span><span class="proc-kw-tag">experiencia compra <span class="kw-cnt">(7x)</span></span><span class="proc-kw-tag">devolveu produto <span class="kw-cnt">(6x)</span></span><span class="proc-kw-tag">mesmo produto <span class="kw-cnt">(6x)</span></span></div></div>
+<div class="proc-card"><div class="proc-header"><span class="proc-name" title="Drivers">Drivers</span><span class="proc-impact-badge">-0.74 pp</span></div><div class="proc-metrics"><div class="pm-item"><div class="pm-label">NPS Atual</div><div class="pm-val" style="color:#f39c12">64.7%<span class="down" style="font-size:0.68rem;margin-left:4px">▼2.7</span></div></div><div class="pm-item"><div class="pm-label">Target</div><div class="pm-val" style="color:#f39c12">70.3%</div></div><div class="pm-item"><div class="pm-label">Pesquisas</div><div class="pm-val">558</div></div><div class="pm-item"><div class="pm-label">Detratores</div><div class="pm-val" style="color:#e74c3c">12%</div></div></div><div class="proc-bar-wrap"><div class="proc-bar"><div class="proc-bar-seg" style="width:77.1%;background:#27ae60" title="Promotores 77.1%"></div><div class="proc-bar-seg" style="width:10.6%;background:#f39c12"  title="Passivos 10.6%"></div><div class="proc-bar-seg" style="width:12.4%;background:#e74c3c"  title="Detratores 12.4%"></div></div><div class="proc-bar-legend"><span style="color:#27ae60">77% Prom.</span><span style="color:#f39c12">11% Pas.</span><span style="color:#e74c3c">12% Det.</span></div></div><div class="proc-kw-title">Temas recorrentes (detratores)</div><div class="proc-kw-list"><span class="proc-kw-tag">num num <span class="kw-cnt">(29x)</span></span><span class="proc-kw-tag">num dias <span class="kw-cnt">(19x)</span></span><span class="proc-kw-tag">mercado livre <span class="kw-cnt">(13x)</span></span><span class="proc-kw-tag">mercado libre <span class="kw-cnt">(10x)</span></span><span class="proc-kw-tag">conversar agora <span class="kw-cnt">(9x)</span></span><span class="proc-kw-tag">envio extra <span class="kw-cnt">(9x)</span></span></div></div>
+<div class="proc-card"><div class="proc-header"><span class="proc-name" title="Viaje del paquete - Vendedor">Viaje del paquete - Vendedor</span><span class="proc-impact-badge">-0.39 pp</span></div><div class="proc-metrics"><div class="pm-item"><div class="pm-label">NPS Atual</div><div class="pm-val" style="color:#e74c3c">38.8%<span class="down" style="font-size:0.68rem;margin-left:4px">▼26.8</span></div></div><div class="pm-item"><div class="pm-label">Target</div><div class="pm-val" style="color:#f39c12">72.5%</div></div><div class="pm-item"><div class="pm-label">Pesquisas</div><div class="pm-val">49</div></div><div class="pm-item"><div class="pm-label">Detratores</div><div class="pm-val" style="color:#e74c3c">20%</div></div></div><div class="proc-bar-wrap"><div class="proc-bar"><div class="proc-bar-seg" style="width:59.2%;background:#27ae60" title="Promotores 59.2%"></div><div class="proc-bar-seg" style="width:20.4%;background:#f39c12"  title="Passivos 20.4%"></div><div class="proc-bar-seg" style="width:20.4%;background:#e74c3c"  title="Detratores 20.4%"></div></div><div class="proc-bar-legend"><span style="color:#27ae60">59% Prom.</span><span style="color:#f39c12">20% Pas.</span><span style="color:#e74c3c">20% Det.</span></div></div><div class="proc-kw-title">Temas recorrentes (detratores)</div><div class="proc-kw-list"><span class="proc-kw-tag">dia num <span class="kw-cnt">(11x)</span></span><span class="proc-kw-tag">amor dios <span class="kw-cnt">(7x)</span></span><span class="proc-kw-tag">num num <span class="kw-cnt">(6x)</span></span><span class="proc-kw-tag">ella tiene <span class="kw-cnt">(5x)</span></span><span class="proc-kw-tag">hablar uno <span class="kw-cnt">(5x)</span></span><span class="proc-kw-tag">mercado pago <span class="kw-cnt">(4x)</span></span></div></div>
+<div class="proc-card"><div class="proc-header"><span class="proc-name" title="Potenciar Ventas">Potenciar Ventas</span><span class="proc-impact-badge">-0.33 pp</span></div><div class="proc-metrics"><div class="pm-item"><div class="pm-label">NPS Atual</div><div class="pm-val" style="color:#e74c3c">46.7%<span class="down" style="font-size:0.68rem;margin-left:4px">▼11.1</span></div></div><div class="pm-item"><div class="pm-label">Target</div><div class="pm-val" style="color:#f39c12">65.4%</div></div><div class="pm-item"><div class="pm-label">Pesquisas</div><div class="pm-val">75</div></div><div class="pm-item"><div class="pm-label">Detratores</div><div class="pm-val" style="color:#e74c3c">19%</div></div></div><div class="proc-bar-wrap"><div class="proc-bar"><div class="proc-bar-seg" style="width:65.3%;background:#27ae60" title="Promotores 65.3%"></div><div class="proc-bar-seg" style="width:16.0%;background:#f39c12"  title="Passivos 16.0%"></div><div class="proc-bar-seg" style="width:18.7%;background:#e74c3c"  title="Detratores 18.7%"></div></div><div class="proc-bar-legend"><span style="color:#27ae60">65% Prom.</span><span style="color:#f39c12">16% Pas.</span><span style="color:#e74c3c">19% Det.</span></div></div><div class="proc-kw-title">Temas recorrentes (detratores)</div><div class="proc-kw-list"><span class="proc-kw-tag">meus anuncios <span class="kw-cnt">(14x)</span></span><span class="proc-kw-tag">num num <span class="kw-cnt">(12x)</span></span><span class="proc-kw-tag">mercado livre <span class="kw-cnt">(12x)</span></span><span class="proc-kw-tag">conversar agora <span class="kw-cnt">(11x)</span></span><span class="proc-kw-tag">screen dropdown <span class="kw-cnt">(10x)</span></span><span class="proc-kw-tag">flow token <span class="kw-cnt">(10x)</span></span></div></div>
 <div class="proc-card"><div class="proc-header"><span class="proc-name" title="Reputación ME">Reputación ME</span><span class="proc-impact-badge">-0.33 pp</span></div><div class="proc-metrics"><div class="pm-item"><div class="pm-label">NPS Atual</div><div class="pm-val" style="color:#27ae60">81.9%<span class="up" style="font-size:0.68rem;margin-left:4px">▲+1.8</span></div></div><div class="pm-item"><div class="pm-label">Target</div><div class="pm-val" style="color:#f39c12">84.8%</div></div><div class="pm-item"><div class="pm-label">Pesquisas</div><div class="pm-val">485</div></div><div class="pm-item"><div class="pm-label">Detratores</div><div class="pm-val" style="color:#e74c3c">6%</div></div></div><div class="proc-bar-wrap"><div class="proc-bar"><div class="proc-bar-seg" style="width:87.6%;background:#27ae60" title="Promotores 87.6%"></div><div class="proc-bar-seg" style="width:6.6%;background:#f39c12"  title="Passivos 6.6%"></div><div class="proc-bar-seg" style="width:5.8%;background:#e74c3c"  title="Detratores 5.8%"></div></div><div class="proc-bar-legend"><span style="color:#27ae60">88% Prom.</span><span style="color:#f39c12">7% Pas.</span><span style="color:#e74c3c">6% Det.</span></div></div><div class="proc-kw-title">Temas recorrentes (detratores)</div><div class="proc-kw-list"><span class="proc-kw-tag">num num <span class="kw-cnt">(15x)</span></span><span class="proc-kw-tag">venda <span class="kw-cnt">(13x)</span></span><span class="proc-kw-tag">gente <span class="kw-cnt">(11x)</span></span><span class="proc-kw-tag">num phone <span class="kw-cnt">(6x)</span></span><span class="proc-kw-tag">phone num <span class="kw-cnt">(4x)</span></span><span class="proc-kw-tag">preciso falar <span class="kw-cnt">(4x)</span></span></div></div>
-<div class="proc-card"><div class="proc-header"><span class="proc-name" title="PR - Propiedad intelectual">PR - Propiedad intelectual</span><span class="proc-impact-badge">-0.28 pp</span></div><div class="proc-metrics"><div class="pm-item"><div class="pm-label">NPS Atual</div><div class="pm-val" style="color:#e74c3c">56.7%<span class="down" style="font-size:0.68rem;margin-left:4px">▼14.7</span></div></div><div class="pm-item"><div class="pm-label">Target</div><div class="pm-val" style="color:#f39c12">70.0%</div></div><div class="pm-item"><div class="pm-label">Pesquisas</div><div class="pm-val">90</div></div><div class="pm-item"><div class="pm-label">Detratores</div><div class="pm-val" style="color:#e74c3c">18%</div></div></div><div class="proc-bar-wrap"><div class="proc-bar"><div class="proc-bar-seg" style="width:74.4%;background:#27ae60" title="Promotores 74.4%"></div><div class="proc-bar-seg" style="width:7.8%;background:#f39c12"  title="Passivos 7.8%"></div><div class="proc-bar-seg" style="width:17.8%;background:#e74c3c"  title="Detratores 17.8%"></div></div><div class="proc-bar-legend"><span style="color:#27ae60">74% Prom.</span><span style="color:#f39c12">8% Pas.</span><span style="color:#e74c3c">18% Det.</span></div></div><div class="proc-kw-title">Temas recorrentes (detratores)</div><div class="proc-kw-list"><span class="proc-kw-tag">mercado livre <span class="kw-cnt">(14x)</span></span><span class="proc-kw-tag">nota fiscal <span class="kw-cnt">(8x)</span></span><span class="proc-kw-tag">num num <span class="kw-cnt">(8x)</span></span><span class="proc-kw-tag">conversar agora <span class="kw-cnt">(8x)</span></span><span class="proc-kw-tag">ligar mercado <span class="kw-cnt">(7x)</span></span><span class="proc-kw-tag">screen textarea <span class="kw-cnt">(7x)</span></span></div></div></div>
+<div class="proc-card"><div class="proc-header"><span class="proc-name" title="PR - Propiedad intelectual">PR - Propiedad intelectual</span><span class="proc-impact-badge">-0.28 pp</span></div><div class="proc-metrics"><div class="pm-item"><div class="pm-label">NPS Atual</div><div class="pm-val" style="color:#e74c3c">56.7%<span class="down" style="font-size:0.68rem;margin-left:4px">▼14.7</span></div></div><div class="pm-item"><div class="pm-label">Target</div><div class="pm-val" style="color:#f39c12">70.0%</div></div><div class="pm-item"><div class="pm-label">Pesquisas</div><div class="pm-val">90</div></div><div class="pm-item"><div class="pm-label">Detratores</div><div class="pm-val" style="color:#e74c3c">18%</div></div></div><div class="proc-bar-wrap"><div class="proc-bar"><div class="proc-bar-seg" style="width:74.4%;background:#27ae60" title="Promotores 74.4%"></div><div class="proc-bar-seg" style="width:7.8%;background:#f39c12"  title="Passivos 7.8%"></div><div class="proc-bar-seg" style="width:17.8%;background:#e74c3c"  title="Detratores 17.8%"></div></div><div class="proc-bar-legend"><span style="color:#27ae60">74% Prom.</span><span style="color:#f39c12">8% Pas.</span><span style="color:#e74c3c">18% Det.</span></div></div><div class="proc-kw-title">Temas recorrentes (detratores)</div><div class="proc-kw-list"><span class="proc-kw-tag">mercado livre <span class="kw-cnt">(14x)</span></span><span class="proc-kw-tag">conversar agora <span class="kw-cnt">(9x)</span></span><span class="proc-kw-tag">nota fiscal <span class="kw-cnt">(8x)</span></span><span class="proc-kw-tag">num num <span class="kw-cnt">(8x)</span></span><span class="proc-kw-tag">flow token <span class="kw-cnt">(8x)</span></span><span class="proc-kw-tag">token unused <span class="kw-cnt">(8x)</span></span></div></div></div>
+  </div>
+
+  <!-- Causas Raiz via Transcrições -->
+  <div class="card" style="border-top: 3px solid #8e44ad; margin-top: 4px;">
+    <h2>&#128300; Causas Raiz Identificadas nas Transcrições · April/2026</h2>
+    <p style="font-size:0.75rem;color:#bbb;margin-bottom:16px">
+      Baseado na leitura de transcrições reais de detratores via
+      <code style="background:#f4f4f4;padding:1px 5px;border-radius:3px;font-size:0.68rem">BT_CX_TRANSCRIPT</code>
+      JOIN <code style="background:#f4f4f4;padding:1px 5px;border-radius:3px;font-size:0.68rem">DM_CX_NPS_Y20_DETAIL</code>
+      &nbsp;·&nbsp; Snapshot gerado em 10/04/2026 &nbsp;·&nbsp;
+      <span style="color:#8e44ad;font-weight:600">Atualizar sob demanda</span>
+    </p>
+    
+<div class="insight-block">
+  <div class="insight-header">
+    <span class="ins-tag">Processo CX</span>
+    <span class="ins-process">Reputación</span>
+    <span class="ins-metrics">NPS 63.2% &middot; Target 71.9% &middot; <strong style="color:#e74c3c">&minus;0.76 pp</strong></span>
+  </div>
+  <div class="insight-finding">
+    <strong>&#128269; O que as transcrições revelam:</strong> O padrão dominante são sellers que possuem
+    <strong>prova de entrega (comprovante assinado, rastreio, nota fiscal) mas não conseguem reverter
+    o impacto na reputação</strong>. Um seller relatou estar <em>"guardando prints de todas as ocorrências
+    porque está acontecendo com bastante frequência"</em>. Outro enviou comprovante de entrega assinado
+    pelo porteiro + rastreio Jadlog + nota fiscal e ainda assim o impacto foi mantido. Devoluções alegando
+    "produto diferente do anunciado" quando o produto é exatamente o descrito também aparecem com
+    frequência — sellers sem caminho de contestação eficaz. A IA não resolve nenhum desses casos,
+    gerando recontato constante.
+  </div>
+  <ul class="insight-causes">
+    <li class="cause-bug">&#128027; <strong>Falha sistêmica:</strong> sistema mantém impacto de reputação mesmo após seller apresentar comprovante de entrega assinado + rastreio + NF — nenhuma tela de contestação funciona</li>
+    <li class="cause-fcr">&#128260; <strong>FCR baixo:</strong> bot não resolve nenhum caso de reputação contestada — praticamente todas as transcrições contêm múltiplas tentativas de <em>"falar com atendente"</em> antes de conseguir acesso humano</li>
+    <li class="cause-gap">&#9888; <strong>Devoluções indevidas sem contestação:</strong> compradores alegam produto diferente do anunciado quando produto está conforme; seller não tem ferramenta eficaz para provar e reverter</li>
+  </ul>
+</div>
+
+<div class="insight-block">
+  <div class="insight-header">
+    <span class="ins-tag">Processo CX</span>
+    <span class="ins-process">Drivers</span>
+    <span class="ins-metrics">NPS 64.7% &middot; Target 70.3% &middot; <strong style="color:#e74c3c">&minus;0.74 pp</strong></span>
+  </div>
+  <div class="insight-finding">
+    <strong>&#128269; O que as transcrições revelam:</strong> Quatro problemas distintos concentram a
+    detração. (1) <strong>App operacional falhando:</strong> <em>"as paradas do dia não aparecem mais
+    pra mim"</em> — driver perde a rota inteira sem aviso. (2) <strong>Contas e rotas bloqueadas sem
+    notificação:</strong> <em>"eu não consigo entrar, acredito que esteja bloqueada ou talvez
+    pausada"</em>. (3) <strong>Pagamentos em atraso sem resposta do suporte:</strong> <em>"o suporte
+    não responde as mensagens para o pagamento"</em>. (4) <strong>Impacto de feriado não gerenciado:</strong>
+    driver relata que agência se recusou a cancelar rota e processar pacotes com a justificativa de
+    que as sacas "estavam vindo" — pacotes em aberto sem responsável. Pacotes bipados como
+    "devolver para vendedor" mesmo após entrega efetiva.
+  </div>
+  <ul class="insight-causes">
+    <li class="cause-bug">&#128027; <strong>Bug no app de entregas:</strong> paradas do dia desaparecem do aplicativo do driver sem aviso — rota inacessível sem caminho de recuperação</li>
+    <li class="cause-tool">&#128295; <strong>Bloqueio de conta sem ferramenta de autoatendimento:</strong> driver fica impossibilitado de trabalhar; suporte não responde no canal correto</li>
+    <li class="cause-gap">&#9888; <strong>Protocolo de feriado inexistente:</strong> sem instrução clara para drivers e agências em feriados — pacotes ficam sem responsável e geram detração por atraso</li>
+    <li class="cause-fcr">&#128260; <strong>Suporte financeiro sem SLA:</strong> pagamentos pendentes sem resposta — drivers contatam múltiplas vezes sem resolução</li>
+  </ul>
+</div>
+
+<div class="insight-block">
+  <div class="insight-header">
+    <span class="ins-tag">Processo CX</span>
+    <span class="ins-process">Potenciar Ventas</span>
+    <span class="ins-metrics">NPS 46.7% &middot; Target 65.4% &middot; <strong style="color:#e74c3c">&minus;0.33 pp</strong></span>
+  </div>
+  <div class="insight-finding">
+    <strong>&#128269; O que as transcrições revelam:</strong> A causa mais recorrente é a
+    <strong>cobrança surpresa de Product Ads por clique sem clareza no momento da ativação</strong>.
+    Um seller relatou: <em>"ativei a campanha de Product Ads pela primeira vez após uma notificação
+    no aplicativo, porém não tinha clareza de que a cobrança ocorria por clique. Em menos de X horas
+    tive um gasto de R$X,XX sem gerar nenhuma venda. Gostaria de solicitar a revisão desses cliques."</em>
+    O segundo problema é visibilidade: sellers com anúncios premium sem reclamação abertas relatam
+    que os produtos <em>"ficam nas últimas páginas de busca"</em> ou simplesmente não aparecem.
+    CLIP sendo recusado aparece como terceiro ponto. Sellers ameaçam migrar para concorrentes
+    (<em>"vou remover todos os meus anúncios e vender na Shoper"</em>).
+  </div>
+  <ul class="insight-causes">
+    <li class="cause-gap">&#9888; <strong>UX enganosa em Product Ads:</strong> ativação via notificação push sem comunicar modelo CPC — sellers Longtail ativam achando que é taxa fixa e são cobrados sem venda</li>
+    <li class="cause-bug">&#128027; <strong>Anúncios premium invisíveis na busca:</strong> sellers relatam anúncios premium sem reclamações que não aparecem nos resultados — possível bug de indexação</li>
+    <li class="cause-tool">&#128295; <strong>CLIP recusado sem justificativa clara:</strong> sellers não entendem o motivo da recusa e não encontram caminho de resolução</li>
+  </ul>
+</div>
+
+<div class="insight-block">
+  <div class="insight-header">
+    <span class="ins-tag">Processo CX</span>
+    <span class="ins-process">Reputación ME</span>
+    <span class="ins-metrics">NPS 81.9% &middot; Target 84.8% &middot; <strong style="color:#e74c3c">&minus;0.33 pp</strong></span>
+  </div>
+  <div class="insight-finding">
+    <strong>&#128269; O que as transcrições revelam:</strong> Dois bugs sistêmicos concentram quase
+    toda a detração. (1) <strong>Cancelamentos atribuídos indevidamente ao seller:</strong> um seller
+    relatou: <em>"ao realizar o procedimento do cancelamento, os pedidos foram afetados indevidamente,
+    pois os pedidos foram cancelados por nós"</em> — seller seguiu o procedimento correto mas o sistema
+    registrou como "cancelado por você", impactando a reputação. (2) <strong>Nota fiscal pendente
+    bloqueando etiqueta em conta PJ:</strong> <em>"venda com pendência de nota fiscal e não libera
+    etiqueta, mesmo a loja sendo pessoa jurídica"</em> — o CNPJ deveria resolver a exigência
+    automaticamente mas não está funcionando. Devolução aguardada desde junho do ano anterior
+    também aparece, indicando casos sem resolução há mais de 9 meses.
+  </div>
+  <ul class="insight-causes">
+    <li class="cause-bug">&#128027; <strong>Bug "cancelado por você":</strong> sistema atribui cancelamento ao seller quando este seguiu o procedimento correto — impacto indevido na reputação sem caminho de contestação</li>
+    <li class="cause-bug">&#128027; <strong>Bug NF/CNPJ:</strong> contas PJ com CNPJ não têm a exigência de nota fiscal automaticamente satisfeita — etiqueta bloqueada impede envio e gera nova detração</li>
+    <li class="cause-fcr">&#128260; <strong>Caso aberto há 9+ meses sem solução:</strong> devoluções de junho do ano anterior ainda sem resolução — ausência de escalada automática por tempo</li>
+  </ul>
+</div>
+
+<div class="insight-block">
+  <div class="insight-header">
+    <span class="ins-tag">Processo CX</span>
+    <span class="ins-process">Viaje del paquete &mdash; Vendedor</span>
+    <span class="ins-metrics">NPS 38.8% &middot; Target 72.5% &middot; <strong style="color:#e74c3c">&minus;0.39 pp</strong></span>
+  </div>
+  <div class="insight-finding">
+    <strong>&#128269; O que as transcrições revelam:</strong> O maior ponto de frustração é a
+    <strong>impossibilidade de atualizar o status do pacote como entregue no sistema</strong>:
+    <em>"fiz uma venda, postei os bancos e não consigo relatar que o banco já foi entregue"</em>.
+    Pacotes parados por semanas (<em>"já faz X dias que está parado"</em>) e esperas de meses
+    (<em>"faz dois meses que eu estou esperando"</em>) indicam falha na logística ou no sistema
+    de atualização de status. Um seller também reportou um <strong>link suspeito</strong> no
+    rastreamento: <em>"eu clico no link e vai em um site estranho — vou te mandar o print"</em>,
+    possível problema de segurança. Sellers afirmam que o sistema trava (<em>"vocês travam,
+    não sou eu que travo"</em>) e vários declaram intenção de parar de vender.
+  </div>
+  <ul class="insight-causes">
+    <li class="cause-bug">&#128027; <strong>Bug de atualização de status:</strong> seller não consegue marcar pacote como entregue no sistema — venda fica pendente indefinidamente</li>
+    <li class="cause-bug">&#128027; <strong>Possível problema de segurança:</strong> link de rastreamento redirecionando para site externo desconhecido — relatado por seller com print enviado ao atendente</li>
+    <li class="cause-gap">&#9888; <strong>SLA de resolução inaceitável:</strong> pacotes parados por 30-60 dias sem resolução — ausência de escalada automática por tempo de pendência</li>
+  </ul>
+</div>
+
+<div class="insight-block">
+  <div class="insight-header">
+    <span class="ins-tag">Processo CX</span>
+    <span class="ins-process">PR &mdash; Propiedad Intelectual</span>
+    <span class="ins-metrics">NPS 56.7% &middot; Target 70.0% &middot; <strong style="color:#e74c3c">&minus;0.28 pp</strong></span>
+  </div>
+  <div class="insight-finding">
+    <strong>&#128269; O que as transcrições revelam:</strong> O padrão central é
+    <strong>conta ou anúncio bloqueado unilateralmente por IA sem aviso prévio e sem caminho de
+    contestação acessível</strong>. Um seller relatou: <em>"o ML, de forma unilateral, decidiu
+    realizar o bloqueio da minha conta sem antes notificar sobre a irregularidade — além disso,
+    segundo o atendente, não há forma de reativar pelo ML"</em>. Outro: <em>"o robô de vocês está
+    errado. Meu anúncio foi inativado dizendo que estou infringindo propriedade intelectual da Adidas,
+    porém em nenhum momento mencionei a Adidas — a camisa é da Braziline"</em>, com nota fiscal e
+    descrição correta. Sellers também relatam que titulares do Brand Protection Program
+    <em>"estão abusando deste direito — são eles que têm que provar que estou infringindo,
+    não eu que tenho que provar"</em>.
+  </div>
+  <ul class="insight-causes">
+    <li class="cause-bug">&#128027; <strong>Falso positivo da IA de PI:</strong> sistema bloqueia produtos legítimos com NF, fabricante declarado e descrição correta — sem distinção entre infração real e alegação de titular</li>
+    <li class="cause-tool">&#128295; <strong>Sem ferramenta de contestação self-service:</strong> seller com NF e documentação não encontra caminho para reativar sem passar por múltiplos atendentes</li>
+    <li class="cause-gap">&#9888; <strong>Abuso do Brand Protection Program:</strong> titulares de direito fazendo takedowns sem comprovação — sellers precisam provar inocência em vez de o denunciante provar infração</li>
+  </ul>
+</div>
+
   </div>
 
 </div>
