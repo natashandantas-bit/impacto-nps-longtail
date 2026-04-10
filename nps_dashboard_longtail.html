@@ -8,32 +8,37 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f0f2f5; color: #333; }
-  .header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: white; padding: 20px 30px; display: flex; justify-content: space-between; align-items: center; }
-  .header h1 { font-size: 1.4rem; font-weight: 600; }
-  .header .meta { font-size: 0.8rem; opacity: 0.7; text-align: right; }
-  .header .badge { background: #e74c3c; padding: 4px 12px; border-radius: 12px; font-size: 0.75rem; margin-top: 4px; display: inline-block; }
-  .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
-  .kpi-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; margin-bottom: 20px; }
-  .kpi-card { background: white; border-radius: 12px; padding: 18px 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border-left: 4px solid #ccc; }
+  .header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: white; padding: 18px 30px; display: flex; justify-content: space-between; align-items: center; }
+  .header h1 { font-size: 1.3rem; font-weight: 600; }
+  .header .meta { font-size: 0.78rem; opacity: 0.7; text-align: right; }
+  .header .badge { background: #e74c3c; padding: 3px 10px; border-radius: 12px; font-size: 0.72rem; margin-top: 4px; display: inline-block; }
+  .container { max-width: 1400px; margin: 0 auto; padding: 18px; }
+  .kpi-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin-bottom: 18px; }
+  .kpi-card {
+    background: white; border-radius: 10px; padding: 14px 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07); border-left: 4px solid #ccc;
+    display: flex; flex-direction: column; justify-content: space-between; min-height: 100px;
+  }
   .kpi-card.red    { border-left-color: #e74c3c; }
   .kpi-card.green  { border-left-color: #27ae60; }
   .kpi-card.orange { border-left-color: #f39c12; }
   .kpi-card.blue   { border-left-color: #3498db; }
   .kpi-card.purple { border-left-color: #9b59b6; }
   .kpi-card.dark   { border-left-color: #2c3e50; }
-  .kpi-label { font-size: 0.7rem; text-transform: uppercase; color: #888; letter-spacing: 0.5px; margin-bottom: 6px; }
-  .kpi-value { font-size: 1.9rem; font-weight: 700; line-height: 1.1; }
-  .kpi-delta { font-size: 0.78rem; margin-top: 5px; }
-  .kpi-sub   { font-size: 0.75rem; color: #888; margin-top: 3px; }
+  .kpi-label { font-size: 0.65rem; text-transform: uppercase; color: #999; letter-spacing: 0.5px; margin-bottom: 4px; }
+  .kpi-value { font-size: 1.65rem; font-weight: 700; line-height: 1.1; }
+  .kpi-value.sm { font-size: 1.05rem; line-height: 1.35; }
+  .kpi-delta { font-size: 0.72rem; margin-top: 4px; color: #666; }
+  .kpi-sub   { font-size: 0.68rem; color: #aaa; margin-top: 2px; }
   .up   { color: #27ae60; } .down { color: #e74c3c; } .neutral { color: #888; }
-  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
-  .card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 16px; }
-  .card h2 { font-size: 0.88rem; font-weight: 700; color: #444; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; border-bottom: 2px solid #f0f2f5; padding-bottom: 10px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+  .card { background: white; border-radius: 10px; padding: 18px 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); margin-bottom: 14px; }
+  .card h2 { font-size: 0.82rem; font-weight: 700; color: #555; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 14px; border-bottom: 2px solid #f0f2f5; padding-bottom: 8px; }
   .chart-wrap { position: relative; height: 260px; }
-  .chart-wrap-tall { position: relative; height: 300px; }
-  .waterfall-legend { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 14px; font-size: 0.78rem; color: #555; }
-  .waterfall-legend span { display: flex; align-items: center; gap: 5px; }
-  .legend-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+  .chart-wrap-tall { position: relative; height: 290px; }
+  .wf-legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 12px; font-size: 0.75rem; color: #555; }
+  .wf-legend span { display: flex; align-items: center; gap: 5px; }
+  .legend-dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
   @media (max-width: 900px) { .kpi-grid { grid-template-columns: repeat(3,1fr); } .grid-2 { grid-template-columns: 1fr; } }
 </style>
 </head>
@@ -45,7 +50,7 @@
     <div class="badge">Publicaciones · ME Sellers · Ventas</div>
   </div>
   <div class="meta">
-    Atualizado em: <strong>10/04/2026 14:13</strong><br>
+    Atualizado em: <strong>10/04/2026 14:39</strong><br>
     Mês de referência: <strong>April/2026</strong><br>
     Seniority: <strong>Tableau-aligned</strong>
   </div>
@@ -56,47 +61,54 @@
   <!-- KPI Cards -->
   <div class="kpi-grid">
 
-    <!-- NPS Atual -->
     <div class="kpi-card orange">
-      <div class="kpi-label">NPS Longtail</div>
-      <div class="kpi-value" style="color:#f39c12">62.5%</div>
+      <div>
+        <div class="kpi-label">NPS Longtail</div>
+        <div class="kpi-value" style="color:#f39c12">62.5%</div>
+      </div>
       <div class="kpi-delta up">▲ +0.1 pp vs mês ant.</div>
     </div>
 
-    <!-- Target -->
     <div class="kpi-card orange">
-      <div class="kpi-label">Target</div>
-      <div class="kpi-value" style="color:#f39c12">65.6%</div>
+      <div>
+        <div class="kpi-label">Target</div>
+        <div class="kpi-value" style="color:#f39c12">65.6%</div>
+      </div>
       <div class="kpi-delta" style="color:#e74c3c">▼ 3.1 pp gap</div>
     </div>
 
-    <!-- NPS NEWBIE -->
     <div class="kpi-card blue">
-      <div class="kpi-label">NPS NEWBIE</div>
-      <div class="kpi-value" style="color:#e74c3c">59.1%</div>
+      <div>
+        <div class="kpi-label">NPS NEWBIE</div>
+        <div class="kpi-value" style="color:#e74c3c">59.1%</div>
+      </div>
       <div class="kpi-delta" style="color:#e74c3c">▼ 8.0 pp vs target</div>
     </div>
 
-    <!-- NPS EXPERT -->
     <div class="kpi-card purple">
-      <div class="kpi-label">NPS EXPERT</div>
-      <div class="kpi-value" style="color:#f39c12">66.1%</div>
+      <div>
+        <div class="kpi-label">NPS EXPERT</div>
+        <div class="kpi-value" style="color:#f39c12">66.1%</div>
+      </div>
       <div class="kpi-delta" style="color:#27ae60">▲ +2.1 pp vs target</div>
     </div>
 
-    <!-- Pesquisas -->
     <div class="kpi-card dark">
-      <div class="kpi-label">Pesquisas</div>
-      <div class="kpi-value">4,262</div>
-      <div class="kpi-delta down">▼ 70.0% vs mês ant.</div>
+      <div>
+        <div class="kpi-label">Pesquisas</div>
+        <div class="kpi-value">4,262</div>
+        <div class="kpi-sub">01/04 a 10/04</div>
+      </div>
+      <div class="kpi-delta down">▼ 15.9% vs mesmo período ant.</div>
     </div>
 
-    <!-- Processo crítico -->
     <div class="kpi-card red">
-      <div class="kpi-label">Processo Mais Crítico</div>
-      <div class="kpi-value" style="font-size:1.1rem;line-height:1.3;color:#e74c3c">Viaje del paquete - Comprado</div>
-      <div class="kpi-sub">43.1% NPS · 9% do volume</div>
-      <div class="kpi-delta down">▼ 1.9 pp impacto no consolidado</div>
+      <div>
+        <div class="kpi-label">Processo Crítico</div>
+        <div class="kpi-value sm" style="color:#e74c3c">Reputaci�n</div>
+        <div class="kpi-sub">63.2% NPS · 9% vol.</div>
+      </div>
+      <div class="kpi-delta down">▼ 0.8 pp vs target</div>
     </div>
 
   </div>
@@ -108,10 +120,28 @@
       <div class="chart-wrap-tall"><canvas id="chartTeams"></canvas></div>
     </div>
     <div class="card">
-      <h2>Contribuição Ponderada por Equipe (mês atual)</h2>
+      <h2>Impacto vs Target por Equipe (mês atual)</h2>
       <div class="chart-wrap-tall"><canvas id="chartWaterfall"></canvas></div>
-      <div class="waterfall-legend">
-        <span><span class="legend-dot" style="background:#3498db"></span>Publicaciones: 61.9% NPS · 15% vol · <strong>+9.3 pp</strong></span><span><span class="legend-dot" style="background:#9b59b6"></span>ME Sellers: 60.5% NPS · 55% vol · <strong>+33.5 pp</strong></span><span><span class="legend-dot" style="background:#e67e22"></span>Ventas: 66.6% NPS · 30% vol · <strong>+19.8 pp</strong></span>
+      <div class="wf-legend">
+        <span>
+          <span class="legend-dot" style="background:#3498db"></span>
+          <strong>Publicaciones</strong>: 61.9% NPS
+          · tgt 69.1%
+          · 15% vol
+          · <strong style="color:#e74c3c">-1.1 pp</strong>
+        </span><span>
+          <span class="legend-dot" style="background:#9b59b6"></span>
+          <strong>ME Sellers</strong>: 60.5% NPS
+          · tgt 63.2%
+          · 55% vol
+          · <strong style="color:#e74c3c">-1.5 pp</strong>
+        </span><span>
+          <span class="legend-dot" style="background:#e67e22"></span>
+          <strong>Ventas</strong>: 66.6% NPS
+          · tgt 68.3%
+          · 30% vol
+          · <strong style="color:#e74c3c">-0.5 pp</strong>
+        </span>
       </div>
     </div>
   </div>
@@ -131,35 +161,34 @@ const TEAM_COLORS = {"Publicaciones": "#3498db", "ME Sellers": "#9b59b6", "Venta
 
 // ── Gráfico por equipe ────────────────────────────────────────────────────────
 const teamData = {"Publicaciones": {"nps": [60.72, 67.53, 71.04, 68.6, 68.97, 61.91], "surveys": [2459, 2128, 3519, 2799, 2327, 638], "targets": [65.25, 67.13, 63.29, 62.99, 63.87, 69.1]}, "ME Sellers": {"nps": [56.72, 55.0, 61.5, 61.04, 60.38, 60.54], "surveys": [9903, 10759, 10778, 9507, 8636, 2357], "targets": [61.06, 59.06, 59.28, 59.28, 61.58, 63.22]}, "Ventas": {"nps": [60.25, 62.05, 63.19, 63.48, 63.11, 66.61], "surveys": [2966, 2498, 3494, 2571, 3258, 1267], "targets": [61.56, 62.99, 60.88, 60.32, 61.49, 68.3]}};
-const teamsCtx = document.getElementById('chartTeams');
 const teamDatasets = [];
 teamDatasets.push({
   label: "Publicaciones",
   data: teamData["Publicaciones"].nps,
   borderColor: TEAM_COLORS["Publicaciones"],
   backgroundColor: TEAM_COLORS["Publicaciones"] + "22",
-  borderWidth: 2, tension: 0.3, fill: false, pointRadius: 3, spanGaps: true
+  borderWidth: 2.5, tension: 0.3, fill: false, pointRadius: 3, spanGaps: true
 });
 teamDatasets.push({
   label: "ME Sellers",
   data: teamData["ME Sellers"].nps,
   borderColor: TEAM_COLORS["ME Sellers"],
   backgroundColor: TEAM_COLORS["ME Sellers"] + "22",
-  borderWidth: 2, tension: 0.3, fill: false, pointRadius: 3, spanGaps: true
+  borderWidth: 2.5, tension: 0.3, fill: false, pointRadius: 3, spanGaps: true
 });
 teamDatasets.push({
   label: "Ventas",
   data: teamData["Ventas"].nps,
   borderColor: TEAM_COLORS["Ventas"],
   backgroundColor: TEAM_COLORS["Ventas"] + "22",
-  borderWidth: 2, tension: 0.3, fill: false, pointRadius: 3, spanGaps: true
+  borderWidth: 2.5, tension: 0.3, fill: false, pointRadius: 3, spanGaps: true
 });
 teamDatasets.push({
   label: 'Target',
   data: [61.83, 60.81, 60.39, 60.16, 61.93, 65.61],
   borderColor: '#f39c12', borderWidth: 2, borderDash: [6,3], pointRadius: 0, fill: false, spanGaps: true
 });
-new Chart(teamsCtx, {
+new Chart(document.getElementById('chartTeams'), {
   type: 'line',
   data: { labels: ALL_MONTHS, datasets: teamDatasets },
   options: {
@@ -172,18 +201,18 @@ new Chart(teamsCtx, {
   }
 });
 
-// ── Waterfall ─────────────────────────────────────────────────────────────────
-const wfFloats = [[0, 9.27], [9.27, 42.75], [42.75, 62.55], [0, 62.55]];
-const wfColors = ["#f39c12", "#f39c12", "#f39c12", "#f39c12"];
-const wfLabels = ["Publicaciones", "ME Sellers", "Ventas", "NPS Longtail"];
+// ── Waterfall: impacto vs target ──────────────────────────────────────────────
+const wfFloats = [[0, 65.61], [65.61, 64.53], [64.53, 63.05], [63.05, 62.55], [0, 62.55]];
+const wfColors = ["#95a5a6", "#e74c3c", "#e74c3c", "#e74c3c", "#e74c3c"];
+const wfLabels = ["Target", "Publicaciones", "ME Sellers", "Ventas", "NPS Longtail"];
 new Chart(document.getElementById('chartWaterfall'), {
   type: 'bar',
   data: {
     labels: wfLabels,
     datasets: [{
-      label: 'Contribuição (pp)',
+      label: 'NPS (pp)',
       data: wfFloats,
-      backgroundColor: wfColors.map((c,i) => i === wfLabels.length-1 ? c + 'dd' : c + '99'),
+      backgroundColor: wfColors.map(c => c + 'bb'),
       borderColor: wfColors,
       borderWidth: 2,
       borderRadius: 4,
@@ -197,8 +226,11 @@ new Chart(document.getElementById('chartWaterfall'), {
         callbacks: {
           label: ctx => {
             const d = ctx.raw;
-            const val = Array.isArray(d) ? (d[1]-d[0]).toFixed(1) : d.toFixed(1);
-            return ` ${val} pp`;
+            if (!Array.isArray(d)) return ` ${d.toFixed(1)}%`;
+            const val = d[1] - d[0];
+            const isTeam = ctx.dataIndex > 0 && ctx.dataIndex < wfLabels.length - 1;
+            return isTeam ? ` ${val >= 0 ? '+' : ''}${val.toFixed(2)} pp vs target`
+                          : ` ${d[1].toFixed(1)}%`;
           }
         }
       }
