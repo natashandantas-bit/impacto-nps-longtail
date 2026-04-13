@@ -17,8 +17,11 @@ Write-Host "Gerando dashboard segmentos..."
 Write-Host "Gerando dashboard longtail consolidado..."
 & $PYTHON "$DIR\generate_longtail_dashboard.py" *>> $LOG
 
+Write-Host "Gerando dashboard por equipe..."
+& $PYTHON "$DIR\generate_team_dashboard.py" *>> $LOG
+
 Write-Host "Publicando no GitHub..."
-& $GIT -C $DIR add newbie_dashboard.html nps_segment_dashboard.html nps_dashboard_longtail.html *>> $LOG
+& $GIT -C $DIR add newbie_dashboard.html nps_segment_dashboard.html nps_dashboard_longtail.html nps_dashboard_team.html *>> $LOG
 & $GIT -C $DIR commit -m "Dashboards atualizados - $(Get-Date -Format 'dd/MM/yyyy HH:mm')" *>> $LOG
 & $GIT -C $DIR push *>> $LOG
 
