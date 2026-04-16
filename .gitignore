@@ -1,0 +1,7 @@
+generate_dashboard.py
+run_dashboard.bat
+dashboard_log.txt
+*.py
+*.bat
+*.txt
+*.log

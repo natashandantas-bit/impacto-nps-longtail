@@ -1,0 +1,18 @@
+SELECT
+  CASE 
+    WHEN CX_TEAM_NAME IN ('BR_Publicaciones_Sellers_Longtail','BR_Ventas_Sellers_Longtail','BR_ME_Sellers_Longtail','BR_Prustomer_Offline','BR_MLPreVenda_Offline','BR_MLPostVenda_Offline','BR_ME_Pre-Despacho_Offline') THEN 'Longtail'
+    WHEN CX_TEAM_NAME IN ('BR_ME_Sellers_Mature','BR_Ventas_Sellers_Mature','BR_Publicaciones_Sellers_Mature') THEN 'Mature'
+  END AS SEG,
+  PRO_PROCESS_NAME,
+  RES_DETRACTION_REASON,
+  COUNT(*) AS CNT
+FROM `meli-bi-data.WHOWNER.DM_CX_NPS_Y20_DETAIL`
+WHERE FLAG_NOT_EXCLUDED_SURVEY IS TRUE AND FLAG_ACTIVE_TEAM IS TRUE
+  AND ANTIGUEDAD_REP IN ('NEWBIE','EXPERT')
+  AND SIT_SITE_ID = 'MLB'
+  AND RES_END_DATE BETWEEN '2026-01-01' AND '2026-03-31'
+  AND DETRACTOR = 1
+  AND RES_DETRACTION_REASON IS NOT NULL
+GROUP BY 1,2,3
+HAVING SEG IS NOT NULL
+ORDER BY PRO_PROCESS_NAME, SEG, CNT DESC

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CX Dashboards — NPS Longtail BR</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #f0f2f5;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+  }
+  .header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  .header h1 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #1a1a2e;
+  }
+  .header p {
+    color: #888;
+    font-size: 0.85rem;
+    margin-top: 6px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    max-width: 900px;
+    width: 100%;
+  }
+  .card {
+    background: white;
+    border-radius: 14px;
+    padding: 28px 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    text-decoration: none;
+    color: inherit;
+    border-left: 5px solid #ccc;
+    transition: transform 0.15s, box-shadow 0.15s;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+  }
+  .card.daily  { border-left-color: #3498db; }
+  .card.weekly { border-left-color: #9b59b6; }
+  .badge {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 3px 9px;
+    border-radius: 20px;
+    width: fit-content;
+  }
+  .card.daily  .badge { background: #ebf5fb; color: #2980b9; }
+  .card.weekly .badge { background: #f5eef8; color: #8e44ad; }
+  .card h2 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1a1a2e;
+    line-height: 1.3;
+  }
+  .card p {
+    font-size: 0.8rem;
+    color: #888;
+    line-height: 1.5;
+  }
+  .arrow {
+    margin-top: auto;
+    font-size: 1.1rem;
+    color: #bbb;
+    align-self: flex-end;
+  }
+  .footer {
+    margin-top: 40px;
+    font-size: 0.75rem;
+    color: #bbb;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>CX Dashboards — NPS Longtail BR</h1>
+  <p>Atualizados automaticamente · Selecione um dashboard abaixo</p>
+</div>
+
+<div class="grid">
+
+  <a class="card daily" href="newbie_dashboard.html">
+    <span class="badge">Diário</span>
+    <h2>NPS Newbies BR Vendedores</h2>
+    <p>Acompanhamento diário de NPS para novos vendedores no Brasil.</p>
+    <span class="arrow">→</span>
+  </a>
+
+  <a class="card daily" href="nps_dashboard_team.html">
+    <span class="badge">Diário</span>
+    <h2>NPS por Equipe — Longtail BR</h2>
+    <p>Visão diária de NPS segmentado por equipe de atendimento.</p>
+    <span class="arrow">→</span>
+  </a>
+
+  <a class="card weekly" href="nps_dashboard_longtail.html">
+    <span class="badge">Semanal</span>
+    <h2>NPS Longtail Brasil Consolidado</h2>
+    <p>Relatório semanal consolidado de NPS para o segmento Longtail.</p>
+    <span class="arrow">→</span>
+  </a>
+
+  <a class="card weekly" href="nps_segment_dashboard.html">
+    <span class="badge">Semanal</span>
+    <h2>NPS Sellers BR — Comparativo por Segmento</h2>
+    <p>Comparativo semanal de NPS entre segmentos de sellers brasileiros.</p>
+    <span class="arrow">→</span>
+  </a>
+
+</div>
+
+<div class="footer">
+  CX · Longtail BR · Atualizado em <span id="date"></span>
+</div>
+
+<script>
+  const d = new Date();
+  document.getElementById('date').textContent =
+    d.toLocaleDateString('pt-BR', { day:'2-digit', month:'2-digit', year:'numeric' }) +
+    ' às ' + d.toLocaleTimeString('pt-BR', { hour:'2-digit', minute:'2-digit' });
+</script>
+
+</body>
+</html>
