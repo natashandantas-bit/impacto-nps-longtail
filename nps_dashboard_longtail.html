@@ -233,13 +233,14 @@
 
   <!-- Causas Raiz via Transcrições -->
   <div class="card" style="border-top: 3px solid #8e44ad; margin-top: 4px;">
+  <div id="insight-month">
     <h2>&#128300; Causas Raiz Identificadas nas Transcrições · April/2026</h2>
     <p style="font-size:0.75rem;color:#bbb;margin-bottom:16px">
       Baseado na leitura de transcrições reais de detratores via
       <code style="background:#f4f4f4;padding:1px 5px;border-radius:3px;font-size:0.68rem">BT_CX_TRANSCRIPT</code>
       JOIN <code style="background:#f4f4f4;padding:1px 5px;border-radius:3px;font-size:0.68rem">DM_CX_NPS_Y20_DETAIL</code>
       &nbsp;·&nbsp; Snapshot gerado em 17/04/2026 &nbsp;·&nbsp;
-      <span style="color:#8e44ad;font-weight:600">Atualizar sob demanda</span>
+      <span style="color:#8e44ad;font-weight:600">Período: 01/04 a 20/04/2026</span>
     </p>
     
 <div class="insight-block">
@@ -395,8 +396,111 @@
     <li class="cause-bug">&#128027; <strong>Metadados de variação inativa persistem:</strong> variação removida continua gerando alertas de violação — bug de sincronização de catálogo</li>
   </ul>
 </div>
+  </div><!-- /insight-month -->
 
+  <div id="insight-week" style="display:none">
+    <h2>&#128300; Causas Raiz Identificadas nas Transcrições · Semana 13/04</h2>
+    <p style="font-size:0.75rem;color:#bbb;margin-bottom:16px">
+      Baseado na leitura de transcrições reais de detratores via
+      <code style="background:#f4f4f4;padding:1px 5px;border-radius:3px;font-size:0.68rem">BT_CX_TRANSCRIPT</code>
+      JOIN <code style="background:#f4f4f4;padding:1px 5px;border-radius:3px;font-size:0.68rem">DM_CX_NPS_Y20_DETAIL</code>
+      &nbsp;·&nbsp; Snapshot gerado em 19/04/2026 &nbsp;·&nbsp;
+      <span style="color:#8e44ad;font-weight:600">Período: 13/04 a 19/04/2026</span>
+    </p>
+
+<div class="insight-block">
+  <div class="insight-header">
+    <span class="ins-tag">Processo CX</span>
+    <span class="ins-process">Drivers</span>
+    <span class="ins-metrics">NPS 69.2% &middot; Target 73.0% &middot; <strong style="color:#e74c3c">&minus;3.8 pp</strong></span>
   </div>
+  <div class="insight-finding">
+    <strong>&#128269; O que as transcrições revelam (13–19/04):</strong> Semana marcada por
+    <strong>desconto financeiro indevido em rotas efetivamente concluídas</strong> — múltiplos drivers
+    relatam débito no saldo e redução de métricas mesmo com entrega confirmada. Segundo padrão:
+    <strong>app travando no check-in de agências</strong> — driver não consegue registrar início de
+    rota e perde a janela de coleta sem protocolo de reposição. Terceiro padrão:
+    <strong>antecipação de rota pré-Tiradentes com data divergente</strong> — sistema atribui data do
+    feriado mas coleta foi marcada para o dia anterior, gerando conflito de responsabilidade.
+  </div>
+  <ul class="insight-causes">
+    <li class="cause-bug">&#128027; <strong>Desconto indevido em entrega realizada:</strong> sistema aplica penalidade financeira mesmo com registro de entrega confirmado — sem caminho de contestação self-service</li>
+    <li class="cause-bug">&#128027; <strong>App travando no check-in da agência:</strong> falha ao registrar início de rota — driver perde coleta por bug sem protocolo de reposição</li>
+    <li class="cause-tool">&#128295; <strong>Conflito de data pré-feriado:</strong> rota antecipada com data errada pelo sistema — driver perde métricas sem poder justificar ausência</li>
+  </ul>
+</div>
+
+<div class="insight-block">
+  <div class="insight-header">
+    <span class="ins-tag">Processo CX</span>
+    <span class="ins-process">Afiliados ML</span>
+    <span class="ins-metrics">NPS 62.1% &middot; Target 69.2% &middot; <strong style="color:#e74c3c">&minus;7.1 pp</strong></span>
+  </div>
+  <div class="insight-finding">
+    <strong>&#128269; O que as transcrições revelam (13–19/04):</strong> Processo com
+    <strong>entrada súbita no ranking de críticos nesta semana</strong> — padrão não observado no
+    acumulado mensal. Padrão dominante: <strong>comissões bloqueadas sem notificação após atualização
+    da plataforma em 13/04</strong> — afiliado só descobre ao tentar sacar. Segundo padrão:
+    <strong>sistema de atribuição quebrando links de rastreamento</strong> — vendas realizadas não são
+    creditadas ao afiliado correto. Terceiro padrão: <strong>conta suspensa por atividade suspeita</strong>
+    sem critério comunicado ou canal de contestação rápido.
+  </div>
+  <ul class="insight-causes">
+    <li class="cause-bug">&#128027; <strong>Comissão bloqueada pós-deploy 13/04:</strong> plataforma congelou pagamentos pendentes durante atualização — sem comunicação prévia aos afiliados afetados</li>
+    <li class="cause-bug">&#128027; <strong>Atribuição de link quebrada:</strong> vendas geradas pelo afiliado não são registradas no painel — prejuízo financeiro direto sem rastreabilidade</li>
+    <li class="cause-tool">&#128295; <strong>Suspensão por atividade suspeita sem critério:</strong> sistema bloqueia conta sem informar regra violada — sem self-service de contestação disponível</li>
+    <li class="cause-fcr">&#128260; <strong>FCR zero nesta semana:</strong> todos os contatos precisaram de escalada humana — bot não reconhece nenhum cenário de afiliado</li>
+  </ul>
+</div>
+
+<div class="insight-block">
+  <div class="insight-header">
+    <span class="ins-tag">Processo CX</span>
+    <span class="ins-process">Emision de Nota Fiscal</span>
+    <span class="ins-metrics">NPS 46.9% &middot; Target 66.0% &middot; <strong style="color:#e74c3c">&minus;19.1 pp</strong></span>
+  </div>
+  <div class="insight-finding">
+    <strong>&#128269; O que as transcrições revelam (13–19/04):</strong> Semana com
+    <strong>pior desempenho de NF em abril (&minus;12.1 pp vs semana anterior)</strong>. Padrão dominante:
+    <strong>CNPJ com Inscrição Estadual isenta rejeitado automaticamente</strong> — módulo fiscal não
+    reconhece código de isenção válido e bloqueia emissão. Segundo padrão: <strong>NF emitida com
+    valor divergente após desconto retroativo</strong> — sistema aplica promoção depois da emissão,
+    gerando inconsistência fiscal que exige cancelamento e reemissão manual. Terceiro padrão:
+    <strong>prazo de emissão expirando silenciosamente</strong> — seller não recebe alerta e perde
+    prazo sem possibilidade de regularização.
+  </div>
+  <ul class="insight-causes">
+    <li class="cause-bug">&#128027; <strong>IE isenta rejeitada pelo módulo fiscal:</strong> sistema exige código de IE mesmo quando CNPJ é isento — bloqueia emissão sem alternativa</li>
+    <li class="cause-bug">&#128027; <strong>Valor divergente por desconto retroativo:</strong> NF emitida com valor original, desconto aplicado depois — inconsistência fiscal sem fluxo automatizado de correção</li>
+    <li class="cause-gap">&#9888; <strong>Alerta de prazo ausente:</strong> contador de prazo expira silenciosamente — seller perde direito de emissão sem ter sido avisado</li>
+  </ul>
+</div>
+
+<div class="insight-block">
+  <div class="insight-header">
+    <span class="ins-tag">Processo CX</span>
+    <span class="ins-process">PR &mdash; Técnica Prohibida</span>
+    <span class="ins-metrics">NPS 59.7% &middot; Target 80.0% &middot; <strong style="color:#e74c3c">&minus;20.3 pp</strong></span>
+  </div>
+  <div class="insight-finding">
+    <strong>&#128269; O que as transcrições revelam (13–19/04):</strong> Semana com
+    <strong>volume atípico de falsos positivos após recalibração da IA de detecção em 13/04</strong>.
+    Padrão principal: <strong>sistema derrubando anúncios legítimos em massa</strong> — sellers com
+    histórico limpo penalizados por nova versão do modelo de classificação. Segundo padrão:
+    <strong>recurso aprovado mas anúncio não restaurado</strong> — bug de sincronização entre módulo
+    de recursos e sistema de publicações. Terceiro padrão: <strong>denúncias anônimas processadas
+    automaticamente</strong> sem revisão humana prévia — canal usado como arma competitiva.
+  </div>
+  <ul class="insight-causes">
+    <li class="cause-bug">&#128027; <strong>Falsos positivos pós-recalibração IA (13/04):</strong> novo modelo mais restritivo derrubou anúncios legítimos — rollback ou whitelist urgente necessário</li>
+    <li class="cause-bug">&#128027; <strong>Bug de sincronização de recurso aprovado:</strong> decisão de aprovação não reflete no status do anúncio — seller aprovado mas ainda penalizado</li>
+    <li class="cause-gap">&#9888; <strong>Denúncias automáticas sem revisão humana:</strong> sistema processa denúncias anônimas imediatamente — canal abusado como ferramenta competitiva</li>
+    <li class="cause-fcr">&#128260; <strong>FCR baixo nesta semana:</strong> volume de casos novos superou capacidade de revisão — filas acumuladas sem SLA comunicado ao seller</li>
+  </ul>
+</div>
+  </div><!-- /insight-week -->
+
+  </div><!-- /card -->
 
 </div>
 
@@ -530,6 +634,10 @@ function switchView(view) {
 
   // Exec summary
   document.getElementById('exec-summary-container').innerHTML = d.exec_html;
+
+  // Causas Raiz — alterna entre mes e semana
+  document.getElementById('insight-month').style.display = view === 'month' ? '' : 'none';
+  document.getElementById('insight-week').style.display  = view === 'week'  ? '' : 'none';
 }
 
 // ── Gráfico por equipe ────────────────────────────────────────────────────────
