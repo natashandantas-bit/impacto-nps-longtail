@@ -93,6 +93,24 @@
   .cause-fcr  { background: #fef3e2; border-left: 3px solid #f39c12; }
   .cause-gap  { background: #eaf4fb; border-left: 3px solid #3498db; }
   .cause-tool { background: #fefce8; border-left: 3px solid #d4ac0d; }
+  /* Insight grid 2 colunas */
+  .insight-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+  @media (max-width: 900px) { .insight-grid { grid-template-columns: 1fr; } }
+  /* Citation boxes */
+  .ins-cite-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
+  .ins-cite-box { border-radius: 5px; padding: 7px 10px; font-size: 0.73rem; line-height: 1.5; }
+  .ins-cite-label { font-weight: 700; font-size: 0.66rem; display: block; margin-bottom: 3px; text-transform: uppercase; letter-spacing: 0.3px; }
+  .ins-cite-text { color: #444; font-style: italic; }
+  .ins-cite-box.info     { background: #eff8ff; border-left: 3px solid #3498db; }
+  .ins-cite-box.info .ins-cite-label     { color: #2471a3; }
+  .ins-cite-box.temporal { background: #fff4e5; border-left: 3px solid #f39c12; }
+  .ins-cite-box.temporal .ins-cite-label { color: #b7770d; }
+  .ins-cite-box.warning  { background: #fef9e7; border-left: 3px solid #d4ac0d; }
+  .ins-cite-box.warning .ins-cite-label  { color: #9a7d0a; }
+  .ins-cite-box.bug      { background: #fde8e8; border-left: 3px solid #e74c3c; }
+  .ins-cite-box.bug .ins-cite-label      { color: #c0392b; }
+  .ins-det-row { font-size: 0.69rem; color: #888; border-top: 1px solid #f0e8ff; padding-top: 8px; margin-top: 10px; }
+  .ins-cases { font-size: 0.63rem; color: #bbb; margin-top: 4px; }
   .view-tabs { display: flex; gap: 0; margin-bottom: 16px; border-radius: 8px; overflow: hidden; border: 1px solid #ddd; width: fit-content; }
   .view-tab { padding: 8px 24px; font-size: 0.78rem; font-weight: 700; cursor: pointer; border: none; background: #f5f5f5; color: #888; text-transform: uppercase; letter-spacing: 0.4px; transition: all 0.2s; }
   .view-tab.active { background: #1a1a2e; color: #f1c40f; }
@@ -233,15 +251,134 @@
 
   <!-- Causas Raiz via Transcrições -->
   <div class="card" style="border-top: 3px solid #8e44ad; margin-top: 4px;">
-    <h2>&#128300; Causas Raiz Identificadas nas Transcrições · April/2026</h2>
+    <h2>&#128300; Causas Raiz Identificadas nas Transcrições · April/2026 <span style="font-size:0.6rem;font-weight:400;color:#aaa;margin-left:8px">&mdash; SNAPSHOT 24/04/2026</span></h2>
     <p style="font-size:0.75rem;color:#bbb;margin-bottom:16px">
-      Baseado na leitura de transcrições reais de detratores via
+      Análise baseada em leitura de transcrições reais de detratores via
       <code style="background:#f4f4f4;padding:1px 5px;border-radius:3px;font-size:0.68rem">BT_CX_TRANSCRIPT</code>
       JOIN <code style="background:#f4f4f4;padding:1px 5px;border-radius:3px;font-size:0.68rem">DM_CX_NPS_Y20_DETAIL</code>
-      &nbsp;·&nbsp; Snapshot gerado em 17/04/2026 &nbsp;·&nbsp;
+      &nbsp;·&nbsp; Snapshot gerado em 24/04/2026 &nbsp;·&nbsp;
       <span style="color:#8e44ad;font-weight:600">Atualizar sob demanda</span>
     </p>
     
+<div class="insight-grid">
+
+<div class="insight-block">
+  <div class="insight-header">
+    <span class="ins-tag">Processo CX</span>
+    <span class="ins-process">Potenciar Ventas</span>
+    <span class="ins-metrics">NPS 47.2% &middot; Target 63.1% &middot; <strong style="color:#e74c3c">&minus;1.81 pp</strong></span>
+  </div>
+  <div class="insight-finding">
+    <strong>&#128269; O que as transcrições revelam:</strong> Processo mais crítico da equipe Publicaciones em abril (gap &minus;16 pp). Padrão dominante: <strong>Product Ads ativado via notificação sem consentimento explícito</strong> — seller cobrado no modelo CPC sem ter selecionado manualmente os anúncios. Segundo padrão: <strong>Clip rejeitado por requisitos legais de divulgação</strong> + bug impede aprovação mesmo após correção do texto. Terceiro padrão: <strong>visibilidade prejudicada por Buy Experience</strong> — métrica algorítmica baseada em benchmark competitivo, não em reputação individual.
+  </div>
+  <div class="ins-cite-list">
+    <div class="ins-cite-box temporal">
+      <span class="ins-cite-label">&#128308; Temporal</span>
+      <span class="ins-cite-text">"O botão do usuário estava cinzento não devido a problemas de reputação, vendas ou pagamento, mas porque o Mercado Livre impõe um período obrigatório de refrigeração/estabilização de 7 dias após o lançamento de uma campanha..."</span>
+    </div>
+    <div class="ins-cite-box info">
+      <span class="ins-cite-label">&#8599; Posicionamento Core</span>
+      <span class="ins-cite-text">"A visibilidade de pesquisa é afetada por erros de relevância de palavras-chave (singular 'Máscara' vs. plural 'Máscaras'), um listado com preços 15x mais elevados do que outros reduzindo ranking, e elementos visuais como..."</span>
+    </div>
+    <div class="ins-cite-box bug">
+      <span class="ins-cite-label">&#128027; Bugs</span>
+      <span class="ins-cite-text">"O clipe foi rejeitado devido ao não cumprimento dos requisitos legais obrigatórios de divulgação do Mercado Livre para produtos de iluminação automotiva. Apesar de adicionar o texto sugerido, o sistema pode não ter reconhecido a..."</span>
+    </div>
+    <div class="ins-cite-box info">
+      <span class="ins-cite-label">&#8599; Funcionalidades ADS</span>
+      <span class="ins-cite-text">"O usuário afirma que a campanha Product Ads foi ativada através de uma notificação de plataforma sem divulgação clara do modelo de pay-per-click ou exigência de selecionar manualmente anúncios, resultando em R$83.90 em encargos..."</span>
+    </div>
+  </div>
+  <div class="ins-det-row">&#128202; 37 detratores neste processo no período &middot; 21% de detração &middot; <em>Causas identificadas por amostragem qualitativa</em></div>
+  <div class="ins-cases">Cases: 447972194 &nbsp;&middot;&nbsp; 447978122 &nbsp;&middot;&nbsp; 448303826 &nbsp;&middot;&nbsp; 448320931 &nbsp;&middot;&nbsp; 448443781 &nbsp;&middot;&nbsp; 448496182 &nbsp;&middot;&nbsp; 448509749 &nbsp;&middot;&nbsp; 448615615</div>
+</div>
+
+<div class="insight-block">
+  <div class="insight-header">
+    <span class="ins-tag">Processo CX</span>
+    <span class="ins-process">PR &mdash; Técnica Prohibida</span>
+    <span class="ins-metrics">NPS 67.1% &middot; Target 78.3% &middot; <strong style="color:#e74c3c">&minus;1.80 pp</strong></span>
+  </div>
+  <div class="insight-finding">
+    <strong>&#128269; O que as transcrições revelam:</strong> IA de moderação com <strong>três falsos positivos recorrentes</strong> em abril: (1) <strong>óculos de prescrição e armações classificados como dispositivos médicos restritos</strong> — correspondência por palavras-chave sem análise semântica. (2) <strong>Listas baseadas em variações moderadas como "categoria incorreta"</strong> mesmo com categorização precisa. (3) <strong>Códigos de peças identificados como dados pessoais</strong> (ex: números de telefone) — IA dispara alerta de suspensão injustificado.
+  </div>
+  <div class="ins-cite-list">
+    <div class="ins-cite-box info">
+      <span class="ins-cite-label">&#8599; Publicação activa</span>
+      <span class="ins-cite-text">"A plataforma mantém uma trilha de auditoria permanente de todos os avisos e restrições de conformidade e responsabilização, independentemente de serem emitidos erroneamente. Este projeto evita manipular dados históricos, mas..."</span>
+    </div>
+    <div class="ins-cite-box info">
+      <span class="ins-cite-label">&#8599; Usuario Restringido</span>
+      <span class="ins-cite-text">"O sistema de moderação automatizado da plataforma classificou incorretamente o óculos de prescrição e até listas de apenas frame como dispositivos médicos restritos devido à correspondência de palavras-chave ou categorização..."</span>
+    </div>
+    <div class="ins-cite-box warning">
+      <span class="ins-cite-label">&#9888; Mal categorizado</span>
+      <span class="ins-cite-text">"O sistema automatizado da plataforma avalia a condição do produto com base em metadados (por exemplo, condição selecionada), título, descrição e sinais de imagem. Mesmo com sinais físicos de uso, se a listagem foi originalmente..."</span>
+    </div>
+    <div class="ins-cite-box info">
+      <span class="ins-cite-label">&#8599; Compatibilidade</span>
+      <span class="ins-cite-text">"O sistema Mercado Livre IA identificou falsamente os códigos de peças de produto como dados pessoais (por exemplo, números de telefone), desencadeando avisos de suspensão injustificados apesar de verificação prévia por agentes de..."</span>
+    </div>
+  </div>
+  <div class="ins-det-row">&#128202; 28 detratores neste processo no período &middot; 11% de detração &middot; <em>Causas identificadas por amostragem qualitativa</em></div>
+  <div class="ins-cases">Cases: 446811743 &nbsp;&middot;&nbsp; 447711032 &nbsp;&middot;&nbsp; 447903582 &nbsp;&middot;&nbsp; 447963646 &nbsp;&middot;&nbsp; 447977100 &nbsp;&middot;&nbsp; 448100170 &nbsp;&middot;&nbsp; 448124798 &nbsp;&middot;&nbsp; 448303188</div>
+</div>
+
+<div class="insight-block">
+  <div class="insight-header">
+    <span class="ins-tag">Processo CX</span>
+    <span class="ins-process">Antes de publicar</span>
+    <span class="ins-metrics">NPS 73.8% &middot; Target 84.3% &middot; <strong style="color:#e74c3c">&minus;1.09 pp</strong></span>
+  </div>
+  <div class="insight-finding">
+    <strong>&#128269; O que as transcrições revelam:</strong> Quatro padrões concentram a detração neste processo: (1) <strong>Brand Protection aceita retiradas de membros registrados sem exigência de propriedade efetiva da marca</strong> — anúncios legítimos derrubados por terceiros com registro na plataforma. (2) <strong>Publicar Catálogo redireciona para página de validação que não exibe o erro real de publicação</strong> — falha de encaminhamento de backend oculta a causa raiz do bloqueio. (3) <strong>bug de integração com DETRAN persiste desde 06/04/2026</strong> — sellers de VIS com apuramento negativo e documentação válida não conseguem republicar. (4) <strong>CBT (Global Selling) é programa por convite com critérios de qualificação opacos</strong> — sellers não entendem como acessar o programa.
+  </div>
+  <div class="ins-cite-list">
+    <div class="ins-cite-box info">
+      <span class="ins-cite-label">&#8599; Publicar Core</span>
+      <span class="ins-cite-text">"O Programa de Proteção da Marca permite aos membros registrados emitir retiradas com base nos direitos de propriedade intelectual reivindicados, mesmo que não sejam proprietários da marca original. O sistema valida a documentação..."</span>
+    </div>
+    <div class="ins-cite-box info">
+      <span class="ins-cite-label">&#8599; Publicar Catálogo</span>
+      <span class="ins-cite-text">"A instabilidade do sistema no motor de revisão de catálogo do Mercado Livre está fazendo com que as submissões permaneçam em estado de 'em revisão' indefinidamente, sem atualizações ou notificações automatizadas aos vendedores. O..."</span>
+    </div>
+    <div class="ins-cite-box info">
+      <span class="ins-cite-label">&#8599; Republicar VIS</span>
+      <span class="ins-cite-text">"A plataforma interpreta incorretamente o status do DETRAN devido a um erro conhecido de integração do sistema, persistindo desde 06/04/2026, apesar de o usuário fornecer certificados de apuramento negativo válidos e confirmação..."</span>
+    </div>
+    <div class="ins-cite-box info">
+      <span class="ins-cite-label">&#8599; CBT</span>
+      <span class="ins-cite-text">"O programa de venda internacional do Mercado Livre (Global Selling) é apenas convidado e restrito a vendedores pré-qualificados com base em sinais de sistema interno (país de registro de conta, verificação de documentos e..."</span>
+    </div>
+  </div>
+  <div class="ins-det-row">&#128202; 13 detratores neste processo no período &middot; 8% de detração &middot; <em>Causas identificadas por amostragem qualitativa</em></div>
+</div>
+
+<div class="insight-block">
+  <div class="insight-header">
+    <span class="ins-tag">Processo CX</span>
+    <span class="ins-process">Reputación ME</span>
+    <span class="ins-metrics">NPS 73.6% &middot; Target 82.7% &middot; <strong style="color:#e74c3c">&minus;1.03 pp</strong></span>
+  </div>
+  <div class="insight-finding">
+    <strong>&#128269; O que as transcrições revelam:</strong> Dois bugs sistêmicos persistem sem correção em abril. (1) <strong>Etiqueta de transporte com dimensões de unidade única para pedidos multi-unidade</strong> — sistema não ajusta peso/dimensão ao embalar múltiplas unidades de catálogo. (2) <strong>Instabilidade na geração de etiqueta causa atraso</strong>, comprador cancela, e o sistema atribui o impacto ao seller. Novo padrão: <strong>reembolso parcial aplicado por IA com base em foto sem notificar o seller</strong> antes da decisão.
+  </div>
+  <div class="ins-cite-list">
+    <div class="ins-cite-box warning">
+      <span class="ins-cite-label">&#9888; HT - No excluímos</span>
+      <span class="ins-cite-text">"O vendedor incompreendia o prazo de entrega como uniformemente 23:59 em todas as ordens, mas o sistema força tempos de corte individualizados por transação. Ele não sabia que as marcações de tempo de expedição são gravadas e..."</span>
+    </div>
+    <div class="ins-cite-box info">
+      <span class="ins-cite-label">&#8599; Eventos comerciais</span>
+      <span class="ins-cite-text">"O sistema Mercado Livre aplica horários de corte estritos para a geração de etiquetas de transporte, e os atrasos – mesmo os causados por horas de operação de pontos de recolha de terceiros – são automaticamente penalizados sem..."</span>
+    </div>
+  </div>
+  <div class="ins-det-row">&#128202; 18 detratores neste processo no período &middot; 10% de detração &middot; <em>Causas identificadas por amostragem qualitativa</em></div>
+  <div class="ins-cases">Cases: 448893143 &nbsp;&middot;&nbsp; 448959650 &nbsp;&middot;&nbsp; 449070724 &nbsp;&middot;&nbsp; 449079785 &nbsp;&middot;&nbsp; 449083543 &nbsp;&middot;&nbsp; 449234419 &nbsp;&middot;&nbsp; 449461582 &nbsp;&middot;&nbsp; 449469260</div>
+</div>
+
+</div>
+
 <div class="insight-block">
   <div class="insight-header">
     <span class="ins-tag">Processo CX</span>
@@ -307,27 +444,6 @@
     <li class="cause-tool">&#128295; <strong>Regra Pix/e-mail indocumentada:</strong> rota cancelada por critério que o driver desconhece — sem aviso prévio ou regularização no app</li>
     <li class="cause-bug">&#128027; <strong>Vínculo com empresa encerrada (Sundex):</strong> backend não remove afiliação automaticamente — conta bloqueada sem solução self-service</li>
     <li class="cause-bug">&#128027; <strong>Rota aberta sem finalização:</strong> agência não consegue fechar rota após retorno do pacote — driver fica com rota pendente no sistema</li>
-  </ul>
-</div>
-
-<div class="insight-block">
-  <div class="insight-header">
-    <span class="ins-tag">Processo CX</span>
-    <span class="ins-process">Potenciar Ventas</span>
-    <span class="ins-metrics">NPS 47.8% &middot; Target 63.8% &middot; <strong style="color:#e74c3c">&minus;16.0 pp</strong></span>
-  </div>
-  <div class="insight-finding">
-    <strong>&#128269; O que as transcrições revelam:</strong> Processo com maior gap da equipe Publicaciones
-    em abril (&minus;16 pp). Padrão dominante: <strong>Product Ads ativado via notificação sem consentimento
-    explícito</strong> — seller cobrado no modelo CPC sem ter selecionado manualmente os anúncios.
-    Segundo padrão: <strong>Clip rejeitado por requisitos legais + bug impede aprovação</strong> mesmo
-    após correção. Terceiro padrão: <strong>posicionamento afetado por Buy Experience</strong> — métrica
-    algorítmica de benchmark competitivo opaca, seller não sabe o que precisa melhorar.
-  </div>
-  <ul class="insight-causes">
-    <li class="cause-gap">&#9888; <strong>Product Ads ativado sem consentimento claro:</strong> campanha CPC ativada via push sem exibir modelo de cobrança — sellers cobrados sem geração de venda</li>
-    <li class="cause-bug">&#128027; <strong>Bug no Clips após correção:</strong> seller adiciona texto exigido mas sistema continua rejeitando — fluxo de aprovação quebrado</li>
-    <li class="cause-tool">&#128295; <strong>Buy Experience opaca:</strong> posicionamento afetado por benchmark de categoria sem transparência de critérios</li>
   </ul>
 </div>
 
